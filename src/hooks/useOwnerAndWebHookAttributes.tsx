@@ -5,6 +5,7 @@ import { ProjectsContext } from '@/pages/_app'
 import { IBase } from '../types'
 
 export default function useOwnerAndWebHookAttributes() {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const { doesScwExist } = useContext(ProjectsContext)!
     const { data: signer } = useSigner<ZeroWalletSigner>()
     const [webHookAttributes, setWebHookAttributes] = useState<IBase>()
