@@ -12,6 +12,7 @@
     "format:fix": "prettier --write ."
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.0.17",
     "@chakra-ui/react": "^2.4.9",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
@@ -21,16 +22,18 @@
     "@types/react-dom": "18.0.10",
     "eslint": "8.33.0",
     "eslint-config-next": "13.1.6",
+    "ethers": "^5.7.2",
     "framer-motion": "^8.5.5",
     "next": "13.1.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "typescript": "4.9.5",
-    "zero-wallet-wagmi-connector": "file:../zw-dashboard-wagmi-connector/package",
     "wagmi": "^0.8.10",
-    "ethers": "^5.7.2"
+    "zero-wallet-wagmi-connector": "file:../zw-dashboard-wagmi-connector/package"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.49.0"
+    "@typescript-eslint/eslint-plugin": "^5.49.0",
+    "eslint-config-prettier": "^8.6.0",
+    "prettier": "^2.8.3"
   }
 }
