@@ -9,6 +9,7 @@ import {
 import { ChakraProvider } from '@chakra-ui/react'
 import { createContext, useState } from 'react'
 import { EntityType, IProject } from '@/types'
+import theme from '@/theme'
 
 const zeroWalletConnectorOptions: ZeroWalletConnectorOptions = {
     zeroWalletServerDomain: process.env.NEXT_PUBLIC_BACKEND_DOMAIN!,
@@ -63,7 +64,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
     return (
         <WagmiConfig client={client}>
-            <ChakraProvider>
+            <ChakraProvider theme={theme}>
                 <ProjectsContext.Provider value={projectsContextValue}>
                     <Layout>
                         <Component {...pageProps} />
