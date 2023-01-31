@@ -19,7 +19,7 @@ export default function Header() {
                 }}
                 display={{ base: 'none', lg: 'inherit' }}
                 mr="auto"
-                src="/zeroWallet.svg"
+                src="/ui_icons/zeroWallet.svg"
                 alt="ZeroWallet"
                 cursor="pointer"
             />
