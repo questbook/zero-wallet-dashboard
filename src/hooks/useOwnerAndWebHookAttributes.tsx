@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import { useSigner } from 'wagmi'
 import { ZeroWalletSigner } from 'zero-wallet-wagmi-connector'
-import { ProjectsContext } from '../../pages/_app'
+import { ProjectsContext } from '@/pages/_app'
 import { IBase } from '../types'
 
 export default function useOwnerAndWebHookAttributes() {
