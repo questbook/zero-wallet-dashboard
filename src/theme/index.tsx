@@ -11,10 +11,10 @@ import text from 'src/theme/components/text'
 
 const theme = extendTheme({
     fonts: {
-        button: 'Neue-Haas-Grotesk-Display, sans-serif',
-        text: 'Neue-Haas-Grotesk-Display, sans-serif',
-        body: 'Neue-Haas-Grotesk-Display, sans-serif',
-        global: 'Neue-Haas-Grotesk-Display, sans-serif',
+        button: 'Inter, Neue-Haas-Grotesk-Display, sans-serif',
+        text: 'Inter, Neue-Haas-Grotesk-Display, sans-serif',
+        body: 'Inter, Neue-Haas-Grotesk-Display, sans-serif',
+        global: 'Inter, Neue-Haas-Grotesk-Display, sans-serif',
     },
     // fonts: {
     // 	body: 'nhg, sans-serif',
