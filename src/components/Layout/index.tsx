@@ -8,10 +8,7 @@ type DashboardLayoutProps = {
 
 export default function Layout({ children }: DashboardLayoutProps) {
     return (
-        <Flex
-            direction="column"
-            minH="100vh"
-        >
+        <Flex direction="column" minH="100vh">
             <Header />
             <main>{children}</main>
             <Spacer />
