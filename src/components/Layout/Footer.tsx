@@ -1,5 +1,5 @@
-import { Flex, Image, Spacer } from "@chakra-ui/react";
-import Link from "next/link";
+import { Flex, Image, Spacer, Link } from "@chakra-ui/react";
+import NextLink from "next/link";
 import { useRouter } from "next/router";
 
 export default function Footer() {
@@ -8,19 +8,22 @@ export default function Footer() {
 
     return (
         <Flex p={9}>
-            <Flex as="footer" gap={3}>
+            <Flex as="footer" gap={5}>
                 <Link
+                    as={NextLink}
                     href='#'
                     
                 >
                     About us
                 </Link>
                 <Link
+                    as={NextLink}
                     href='#'
                 >
                     Explore Grants
                 </Link>
                 <Link
+                    as={NextLink}
                     href='#'
                 >
                     Terms of Service

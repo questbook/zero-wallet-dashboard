@@ -1,8 +1,11 @@
 export default {
     Link: {
         baseStyle: {
-            color: 'brand.500',
+            color: '#B1ADA4',
             whiteSpace: 'nowrap',
+            fontWeight: 400,
+            fontSize: '24px',
+            lineHeight: '40px',
         },
         variants: {
             black: {
