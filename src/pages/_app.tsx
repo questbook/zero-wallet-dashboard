@@ -12,7 +12,9 @@ import { EntityType, IProject } from '@/types'
 import theme from '@/theme'
 
 const zeroWalletConnectorOptions: ZeroWalletConnectorOptions = {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     zeroWalletServerDomain: process.env.NEXT_PUBLIC_BACKEND_DOMAIN!,
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     zeroWalletProjectApiKey: process.env.NEXT_PUBLIC_ZERO_WALLET_API_KEY!,
 }
 
