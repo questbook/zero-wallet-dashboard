@@ -106,26 +106,32 @@ export default {
 				}
 			},
 			openTag: {
-				color:'green.1',
-				background:'rgba(90, 183, 17, 0.2)',
-				borderRadius:'2px',
-				px:'8px',
-				py:'4px',
-				fontSize:'12px',
-				fontWeight:'500',
-				ml:'8px',
-				display:'inline-block'
+				color: 'green.1',
+				background: 'rgba(90, 183, 17, 0.2)',
+				borderRadius: '2px',
+				px: '8px',
+				py: '4px',
+				fontSize: '12px',
+				fontWeight: '500',
+				ml: '8px',
+				display: 'inline-block'
 			},
 			closedTag: {
 				color: 'gray.5',
 				background: 'gray.2',
-				borderRadius:'2px',
-				px:'8px',
-				py:'4px',
-				fontSize:'12px',
-				fontWeight:'500',
-				ml:'8px',
-				display:'inline-block'
+				borderRadius: '2px',
+				px: '8px',
+				py: '4px',
+				fontSize: '12px',
+				fontWeight: '500',
+				ml: '8px',
+				display: 'inline-block'
+			},
+			input: {
+				fontWeight: 700,
+				fontSize: '24px',
+				lineHeight: '32px',
+				color: '#B1ADA4',
 			}
 		},
 	},
