@@ -1,7 +1,13 @@
 import { ChangeEventHandler } from 'react'
 import React from 'react'
-import { CheckIcon } from '@chakra-ui/icons'
-import { Box, Flex, FlexProps, Input, InputGroup, InputRightElement, Link, Text } from '@chakra-ui/react'
+import {
+    Flex,
+    FlexProps,
+    Input,
+    InputGroup,
+    Link,
+    Text,
+} from '@chakra-ui/react'
 
 interface Props extends FlexProps {
     label?: string
@@ -19,90 +25,81 @@ interface Props extends FlexProps {
     isDisabled?: boolean
 }
 
-function TextField({ label, optionalText, helperText, helperLinkText, helperLinkUrl, placeholder, maxLength, value, onChange, isVerified, isDisabled, errorText, onPasteClick, ...props }: Props) {
-    const [currentLength, setCurrentLength] = React.useState(value?.toString().length)
+function TextField({
+    label,
+    optionalText,
+    helperText,
+    helperLinkText,
+    helperLinkUrl,
+    placeholder,
+    maxLength,
+    value,
+    onChange,
+    isDisabled,
+    errorText,
+    ...props
+}: Props) {
+    const [, setCurrentLength] = React.useState(value?.toString().length)
     React.useEffect(() => {
         setCurrentLength(value?.toString().length)
     }, [value])
 
     return (
-        <Flex
-            direction='column'
-            {...props}
-            gap={2}
-        >
+        <Flex direction="column" {...props} gap={2}>
             <Flex>
-                {
-                    label && (
-                        <Text
-                            variant='v2_body'
-                            fontWeight='700'
-                            fontSize={'14px'}
-                            lineHeight={'20px'}
-                            textTransform='uppercase'
-                            color={'#403D39'}
-                        >
-                            {label}
-                        </Text>
-                    )
-                }
-            </Flex>
-            {
-                helperText && (
+                {label && (
                     <Text
-                        variant='v2_metadata'
-                        color='black.3'>
-                        {helperText}
-                        {' '}
-                        {
-                            helperLinkText && (
-                                <Link
-                                    display='inline-block'
-                                    fontWeight='500'
-                                    color='black.3'
-                                    isExternal
-                                    href={helperLinkUrl}>
-                                    {helperLinkText}
-                                </Link>
-                            )
-                        }
+                        variant="v2_body"
+                        fontWeight="700"
+                        fontSize={'14px'}
+                        lineHeight={'20px'}
+                        textTransform="uppercase"
+                        color={'#403D39'}
+                    >
+                        {label}
                     </Text>
-                )
-            }
+                )}
+            </Flex>
+            {helperText && (
+                <Text variant="v2_metadata" color="black.3">
+                    {helperText}{' '}
+                    {helperLinkText && (
+                        <Link
+                            display="inline-block"
+                            fontWeight="500"
+                            color="black.3"
+                            isExternal
+                            href={helperLinkUrl}
+                        >
+                            {helperLinkText}
+                        </Link>
+                    )}
+                </Text>
+            )}
             <InputGroup>
                 <Input
                     placeholder={placeholder}
-                    fontWeight='700'
-                    fontSize='24px'
-                    lineHeight='32px'
+                    fontWeight="700"
+                    fontSize="24px"
+                    lineHeight="32px"
                     maxLength={maxLength}
-                    color='black.1'
+                    color="black.1"
                     onChange={onChange}
                     value={value}
-                    errorBorderColor='orange.2'
+                    errorBorderColor="orange.2"
                     isDisabled={isDisabled}
                     onWheel={(e) => (e.target as HTMLElement).blur()}
                 />
-                {
-                    optionalText && (
-                        <Text
-                            ml={1}
-                            variant='v2_metadata'
-                            color='black.3'>
-                            {optionalText}
-                        </Text>
-                    )
-                }
+                {optionalText && (
+                    <Text ml={1} variant="v2_metadata" color="black.3">
+                        {optionalText}
+                    </Text>
+                )}
             </InputGroup>
             <Flex mt={1}>
-                {
-                    errorText && errorText !== '' && (
-                        <Text
-                            color='orange.500'>
-                            {errorText}
-                        </Text>
-                    )
-                }
+                {errorText && errorText !== '' && (
+                    <Text color="orange.500">{errorText}</Text>
+                )}
             </Flex>
         </Flex>
     )

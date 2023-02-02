@@ -1,51 +1,54 @@
-import { SupportedChainIds } from "@/constants/chains";
-import { Button, Card, Flex, Text } from "@chakra-ui/react";
-import { ethers } from "ethers";
-import { useEffect, useState } from "react";
-import CreateProjectContractsInput from "./CreateProjectContractsInput";
-import CreateProjectNameInput from "./CreateProjectNameInput";
+import { SupportedChainIds } from '@/constants/chains'
+import { Button, Card, Flex, Text } from '@chakra-ui/react'
+import { ethers } from 'ethers'
+import { useState } from 'react'
+import CreateProjectContractsInput from './CreateProjectContractsInput'
+import CreateProjectNameInput from './CreateProjectNameInput'
 
 export default function CreateProject() {
+    const [projectName, setProjectName] = useState<string>('')
+    const [projectNameError, setProjectNameError] = useState<string>('')
 
-    const [projectName, setProjectName] = useState<string>('');
-    const [projectNameError, setProjectNameError] = useState<string>('');
+    const [contracts, setContracts] = useState<Array<string>>([''])
+    const [contractsNetworks, setContractsNetworks] = useState<
+        Array<SupportedChainIds>
+    >([])
+    const [contractsError, setContractsError] = useState<string>('')
 
-    const [contracts, setContracts] = useState<Array<string>>(['']);
-    const [contractsNetworks, setContractsNetworks] = useState<Array<SupportedChainIds>>([]);
-    const [contractsError, setContractsError] = useState<string>('');
-
-    const [step, setStep] = useState(0);
+    const [step, setStep] = useState(0)
 
     const nextClick = () => {
         if (step === 0) {
             if (projectName === '') {
-                setProjectNameError('Project name is required');
+                setProjectNameError('Project name is required')
+            } else {
+                setProjectNameError('')
+                setStep(1)
             }
-            else {
-                setProjectNameError('');
-                setStep(1);
-            }
-            return;
+            return
         }
 
         if (step === 1) {
-            let error = false;
-            contracts.forEach((contract: string, index: number) => {
+            let error = false
+            contracts.forEach((contract: string) => {
                 if (!ethers.utils.isAddress(contract)) {
-                    setContractsError('Invalid contracts / At least one valid contract is required.');
-                    error = true;
+                    setContractsError(
+                        'Invalid contracts / At least one valid contract is required.'
+                    )
+                    error = true
                 }
             })
 
             if (contractsNetworks.length === 0 || error) {
-                setContractsError('Invalid contracts / At least one valid contract is required.');
-                error = false;
+                setContractsError(
+                    'Invalid contracts / At least one valid contract is required.'
+                )
+                error = false
+            } else {
+                setContractsError('')
+                setStep(2)
             }
-            else {
-                setContractsError('');
-                setStep(2);
-            }
-            return;
+            return
         }
     }
 
@@ -56,8 +59,8 @@ export default function CreateProject() {
         }
 
         if (step === 2) {
-            setStep(1);
-            return;
+            setStep(1)
+            return
         }
     }
 
@@ -66,6 +69,7 @@ export default function CreateProject() {
             errorText={projectNameError}
             setName={setProjectName}
             name={projectName}
+            key={1}
         />,
         <CreateProjectContractsInput
             setContracts={setContracts}
@@ -73,8 +77,9 @@ export default function CreateProject() {
             contractsNetworks={contractsNetworks}
             setContractsNetworks={setContractsNetworks}
             contractsError={contractsError}
+            key={2}
         />,
-        <div>Step 3</div>
+        <div key={3}>Step 3</div>,
     ]
 
     return (
@@ -85,11 +90,7 @@ export default function CreateProject() {
             flexDirection={'column'}
             display="flex"
         >
-            <Flex
-                flexDirection={'column'}
-                w='100%'
-                px='5'
-            >
+            <Flex flexDirection={'column'} w="100%" px="5">
                 <Text
                     fontSize={'64px'}
                     fontWeight={'700'}
@@ -105,34 +106,35 @@ export default function CreateProject() {
                     width={'100%'}
                     mt={10}
                 >
-                    {step > 0 &&
+                    {step > 0 && (
                         <Button
                             backgroundColor={'#E0DCD5'}
                             borderRadius={'27px'}
-                            alignItems='flex-end'
+                            alignItems="flex-end"
                             fontStyle={'normal'}
                             fontWeight={'700'}
                             fontSize={'24px'}
-                            color='#403D39'
+                            color="#403D39"
                             lineHeight={'32px'}
-                            padding='10px 20px'
-                            width='134px'
-                            height='52px'
-                            onClick={prevClick}>
+                            padding="10px 20px"
+                            width="134px"
+                            height="52px"
+                            onClick={prevClick}
+                        >
                             Back
                         </Button>
-                    }
+                    )}
                     <Button
                         backgroundColor={'#EC5D2A'}
                         borderRadius={'27px'}
                         fontStyle={'normal'}
                         fontWeight={'700'}
                         fontSize={'24px'}
-                        color='white'
-                        alignSelf='flex-end'
+                        color="white"
+                        alignSelf="flex-end"
                         lineHeight={'32px'}
-                        width='172px'
-                        height='52px'
+                        width="172px"
+                        height="52px"
                         onClick={nextClick}
                         ml={'auto'}
                     >
@@ -142,6 +144,4 @@ export default function CreateProject() {
             </Flex>
         </Card>
     )
-
-
 }
