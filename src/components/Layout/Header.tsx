@@ -29,14 +29,11 @@ export default function Header() {
                 ml="auto"
                 gap={5}
             >
-                <Button variant="primary2"
-                >
-                    <Text
-                        variant='heading3Bold'
-                        color='white'
-                    >
+                <Button variant="primary2">
+                    <Text variant="heading3Bold" color="white">
                         Contact us
-                    </Text></Button>
+                    </Text>
+                </Button>
 
                 <Button gap={2} background="white">
                     <Image
