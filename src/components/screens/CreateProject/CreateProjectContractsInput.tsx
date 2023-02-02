@@ -1,4 +1,4 @@
-import { SupportedChainIds } from '@/constants/chains'
+import { DEFAULT_CHAIN, SupportedChainIds } from '@/constants/chains'
 import { Button, Flex, Text } from '@chakra-ui/react'
 import ContractInput from './ContractInput'
 
@@ -64,6 +64,7 @@ export default function CreateProjectContractsInput({
                 height="52px"
                 onClick={() => {
                     setContracts([...contracts, ''])
+                    setContractsNetworks([...contractsNetworks, DEFAULT_CHAIN])
                 }}
             >
                 Add another contract

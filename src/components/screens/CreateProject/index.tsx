@@ -1,9 +1,10 @@
-import { SupportedChainIds } from '@/constants/chains'
+import { DEFAULT_CHAIN, SupportedChainIds } from '@/constants/chains'
 import { Button, Card, Flex, Text } from '@chakra-ui/react'
 import { ethers } from 'ethers'
 import { useState } from 'react'
 import CreateProjectContractsInput from './CreateProjectContractsInput'
 import CreateProjectNameInput from './CreateProjectNameInput'
+
 
 export default function CreateProject() {
     const [projectName, setProjectName] = useState<string>('')
@@ -12,7 +13,7 @@ export default function CreateProject() {
     const [contracts, setContracts] = useState<Array<string>>([''])
     const [contractsNetworks, setContractsNetworks] = useState<
         Array<SupportedChainIds>
-    >([])
+    >([DEFAULT_CHAIN])
     const [contractsError, setContractsError] = useState<string>('')
 
     const [step, setStep] = useState(0)
