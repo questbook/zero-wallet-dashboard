@@ -1,6 +1,6 @@
 import getAvatar from '@/utils/avatarUtils'
 import { formatAddress } from '@/utils/formattingUtils'
-import { Button, Flex, Image } from '@chakra-ui/react'
+import { Button, Flex, Image, Text } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 
 // header component with wagmi connect button
@@ -29,7 +29,14 @@ export default function Header() {
                 ml="auto"
                 gap={5}
             >
-                <Button variant="primary2">Contact us</Button>
+                <Button variant="primary2"
+                >
+                    <Text
+                        variant='heading3Bold'
+                        color='white'
+                    >
+                        Contact us
+                    </Text></Button>
 
                 <Button gap={2} background="white">
                     <Image
