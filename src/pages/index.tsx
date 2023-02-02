@@ -1,8 +1,16 @@
 import Head from 'next/head'
 import { Text, Box, Card, Flex, Spacer, Button, Image } from '@chakra-ui/react'
 import TextFade from '@/components/UI/animations/TextFade'
+import { useRouter } from 'next/router'
 
 export default function Home() {
+
+    const router = useRouter()
+
+    const handleClick = () => {
+        router.push('/createProject')
+    }
+
     return (
         <>
             <Head>
@@ -44,7 +52,7 @@ export default function Home() {
                             <Text variant="heading1Bold" color={'black.3'}>
                                 Gasless transactions for your Dapp.
                             </Text>
-                            <Button variant={'primary2'} mt="20">
+                            <Button variant={'primary2'} mt="20" onClick={handleClick}>
                                 <Text variant={'heading3Bold'} color="white">
                                     Add Zero to Your Dapp
                                 </Text>
@@ -86,7 +94,7 @@ export default function Home() {
                                 Your users always pay $0.
                             </Text>
                             <br />
-                            <Button variant={'primary2'} mt="20">
+                            <Button variant={'primary2'} mt="20" onClick={handleClick}>
                                 <Text variant={'heading3Bold'} color="white">
                                     Add Zero to Your Dapp
                                 </Text>
