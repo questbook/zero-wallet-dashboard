@@ -6,17 +6,13 @@ const colors = {
     },
     white: '#FFFFFF',
     gray: {
-        1: '#F7F5F2',
-        2: '#F1EEE8',
-        3: '#E7E4DD',
-        4: '#C1BDB7',
-        5: '#8D8B87',
-        6: '#767471',
+        1: '#E0DCD5',
+        2: '#F8F4EF',
     },
     black: {
-        1: '#1D1919',
-        2: '#2B2929',
-        3: '#53514F',
+        1: '#0C120C',
+        2: '#403D39',
+        3: '#B1ADA4',
     },
     green: {
         1: '#5AB711',
@@ -34,6 +30,12 @@ const colors = {
         crayola: '#F4D364',
     },
     orange: '#EC5D2A',
+    mulberry: '#BF2AEC',
+    turquoise: '#2AECBF',
+    blue: {
+        1: '#2AB8EC',
+    },
+    amaranth: '#EC2A57',
 }
 
 export default colors
