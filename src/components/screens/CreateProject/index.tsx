@@ -4,19 +4,27 @@ import { ethers } from 'ethers'
 import { useState } from 'react'
 import CreateProjectContractsInput from './CreateProjectContractsInput'
 import CreateProjectNameInput from './CreateProjectNameInput'
-
+import CreateProjectDomainInput from './CreateProjectDomainInput'
+import { isValidUrl } from '@/utils/checkers'
 
 export default function CreateProject() {
+    // current step
+    const [step, setStep] = useState(0)
+
+    // step 1: name
     const [projectName, setProjectName] = useState<string>('')
     const [projectNameError, setProjectNameError] = useState<string>('')
 
+    // step 2: contract whitelist
     const [contracts, setContracts] = useState<Array<string>>([''])
     const [contractsNetworks, setContractsNetworks] = useState<
         Array<SupportedChainIds>
     >([DEFAULT_CHAIN])
     const [contractsError, setContractsError] = useState<string>('')
 
-    const [step, setStep] = useState(0)
+    // step 3: allowed domains
+    const [domains, setDomains] = useState<Array<string>>([''])
+    const [domainsError, setDomainsError] = useState<string>('')
 
     const nextClick = () => {
         if (step === 0) {
@@ -27,9 +35,7 @@ export default function CreateProject() {
                 setStep(1)
             }
             return
-        }
-
-        if (step === 1) {
+        } else if (step === 1) {
             let error = false
             contracts.forEach((contract: string) => {
                 if (!ethers.utils.isAddress(contract)) {
@@ -50,6 +56,17 @@ export default function CreateProject() {
                 setStep(2)
             }
             return
+        } else if (step === 2) {
+            const error = domains.some((domain) => !isValidUrl(domain))
+            console.log('error', error)
+            if (error) {
+                setDomainsError(
+                    'Invalid domains / At least one valid domain is required.'
+                )
+            } else {
+                setDomainsError('')
+                setStep(2)
+            }
         }
     }
 
@@ -80,7 +97,12 @@ export default function CreateProject() {
             contractsError={contractsError}
             key={2}
         />,
-        <div key={3}>Step 3</div>,
+        <CreateProjectDomainInput
+            key={3}
+            domains={domains}
+            setDomains={setDomains}
+            domainsError={domainsError}
+        />,
     ]
 
     return (
