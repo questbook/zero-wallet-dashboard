@@ -25,7 +25,8 @@ export default function ContractInput({
 }: Props) {
     const [contractState, setContractState] = useState(0)
     const networks = Object.keys(SupportedChainIds).filter((v) =>
-        isNaN(Number(v))) as (keyof typeof SupportedChainIds)[]
+        isNaN(Number(v))
+    ) as (keyof typeof SupportedChainIds)[]
 
     useEffect(() => {
         if (contractsNetworks[index]) {
@@ -107,17 +108,15 @@ export default function ContractInput({
                         selectedItem={{
                             label: CHAIN_NAMES[contractsNetworks[index]],
                             value: contractsNetworks[index],
-                            iconPath: CHAIN_ICONS[contractsNetworks[index]]
+                            iconPath: CHAIN_ICONS[contractsNetworks[index]],
                         }}
-                        listItems={networks.map(network => {
-                            const keyNetwork = SupportedChainIds[network];
+                        listItems={networks.map((network) => {
+                            const keyNetwork = SupportedChainIds[network]
                             return {
                                 value: keyNetwork,
                                 label: CHAIN_NAMES[keyNetwork],
-                                iconPath: CHAIN_ICONS[keyNetwork]
+                                iconPath: CHAIN_ICONS[keyNetwork],
                             }
-
-
                         })}
                     />
                     {/* {networks.map((network, index) => {

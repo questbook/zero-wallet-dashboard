@@ -31,7 +31,7 @@ export default {
                 fontWeight: '400',
                 fontSize: '18px',
                 lineHeight: '24px',
-            }
+            },
         },
     },
 }

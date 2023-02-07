@@ -25,5 +25,4 @@ const CHAIN_ICONS: {
 
 export const DEFAULT_CHAIN = SupportedChainIds.POLYGON
 
-
 export { SupportedChainIds, CHAIN_NAMES, CHAIN_ICONS }
