@@ -53,7 +53,7 @@ export default function ContractInput({
                 />,
             ],
         ]
-    }, [networks])
+    }, [])
 
     return (
         <Flex
