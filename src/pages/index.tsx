@@ -31,7 +31,7 @@ export default function Home() {
                     <TextFade
                         textList={[
                             'pay gas fees..',
-                            'have to Metamask installed..',
+                            'have to get Metamask installed..',
                             'switch networks..',
                         ]}
                         textColorList={['mulberry', 'blue.1', 'amaranth']}
@@ -74,7 +74,7 @@ export default function Home() {
                     </Flex>
                 </Card>
 
-                <Card h="600px" my="10" borderRadius={'24px'}>
+                <Card h="600px" my="10" borderRadius={'24px'} backgroundColor='#FFFFFF'>
                     <Flex h="100%">
                         <Box w="50%" py={'10'} px={12} h="100%">
                             <Text
