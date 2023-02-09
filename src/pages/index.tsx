@@ -36,7 +36,7 @@ export default function Home() {
                         ]}
                         textColorList={['mulberry', 'blue.1', 'amaranth']}
                         cooldownTime={3}
-                        morphTime={0.5}
+                        morphTime={0.1}
                         variant={'heading1Bold'}
                         color={'black.1'}
                     />
