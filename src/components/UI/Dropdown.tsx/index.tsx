@@ -52,8 +52,6 @@ function SingleElement({ listItem }: { listItem: ListItem }) {
 function Dropdown({ listItems, handleChange, selectedItem }: DropdownProps) {
     const [isOpen, setIsOpen] = React.useState(false)
 
-    console.log(listItems)
-
     return (
         <Menu isOpen={isOpen} onClose={() => setIsOpen(false)}>
             <MenuButton

@@ -12,7 +12,6 @@ export default function CreateProjectDomainInput({
     domains,
     domainsError,
 }: Props) {
-    console.log(domainsError)
 
     return (
         <Flex flexDirection={'column'}>
