@@ -13,7 +13,6 @@ export interface GasTankType {
 
 export interface NewGasTank extends IBase {
     chainId: number
-    providerURL: string
     whitelist: string[]
 }
 
