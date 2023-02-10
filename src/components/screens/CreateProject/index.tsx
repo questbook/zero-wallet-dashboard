@@ -1,13 +1,17 @@
 import { DEFAULT_CHAIN, SupportedChainIds } from '@/constants/chains'
-import { Button, Card, Flex, Text } from '@chakra-ui/react'
+import { Button, Card, Flex, Text, useToast } from '@chakra-ui/react'
 import { ethers } from 'ethers'
 import { useState } from 'react'
 import CreateProjectContractsInput from './CreateProjectContractsInput'
 import CreateProjectNameInput from './CreateProjectNameInput'
 import CreateProjectDomainInput from './CreateProjectDomainInput'
 import { isValidUrl } from '@/utils/checkers'
+import useOwnerAndWebHookAttributes from '@/hooks/useOwnerAndWebHookAttributes'
+import { createNewProjectWithGasTanks } from '@/api'
 
 export default function CreateProject() {
+    const ownerAndWebHookAttributes = useOwnerAndWebHookAttributes();
+
     // current step
     const [step, setStep] = useState(0)
 
@@ -25,6 +29,9 @@ export default function CreateProject() {
     // step 3: allowed domains
     const [domains, setDomains] = useState<Array<string>>([''])
     const [domainsError, setDomainsError] = useState<string>('')
+
+    // ui
+    const toast = useToast()
 
     const nextClick = () => {
         if (step === 0) {
@@ -58,14 +65,23 @@ export default function CreateProject() {
             return
         } else if (step === 2) {
             const error = domains.some((domain) => !isValidUrl(domain))
-            console.log('error', error)
             if (error) {
                 setDomainsError(
                     'Invalid domains / At least one valid domain is required.'
                 )
             } else {
                 setDomainsError('')
-                setStep(2)
+                if (!ownerAndWebHookAttributes) {
+                    toast({
+                        title: 'Error',
+                        description: 'Please connect your wallet.',
+                        status: 'error',
+                        isClosable: true,
+                    })
+                }
+                else {
+                    createNewProjectWithGasTanks(ownerAndWebHookAttributes, projectName, contracts, contractsNetworks, domains);
+                }
             }
         }
     }
@@ -87,7 +103,7 @@ export default function CreateProject() {
             errorText={projectNameError}
             setName={setProjectName}
             name={projectName}
-            key={1}
+            key={'child-1'}
         />,
         <CreateProjectContractsInput
             setContracts={setContracts}
@@ -95,10 +111,10 @@ export default function CreateProject() {
             contractsNetworks={contractsNetworks}
             setContractsNetworks={setContractsNetworks}
             contractsError={contractsError}
-            key={2}
+            key={'child-2'}
         />,
         <CreateProjectDomainInput
-            key={3}
+            key={'child-3'}
             domains={domains}
             setDomains={setDomains}
             domainsError={domainsError}
