@@ -55,3 +55,12 @@ export type EntityType =
     | IGasTank
     | CreateProjectEntity
     | CreateGasTankEntity
+
+export type GasTankBalanceType = {
+    dappGasTankData: {
+        effectiveBalanceInWei: number
+        effectiveBalanceInStandardForm: number
+        isBelowThreshold: boolean
+        isInGracePeriod: boolean
+    }
+}
