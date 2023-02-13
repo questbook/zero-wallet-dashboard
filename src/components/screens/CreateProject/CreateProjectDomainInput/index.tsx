@@ -1,4 +1,5 @@
 import { Button, Flex, Text } from '@chakra-ui/react'
+import React from 'react'
 import DomainInput from './DomainInput'
 
 interface Props {
@@ -18,7 +19,7 @@ export default function CreateProjectDomainInput({
             {domains.length > 0 &&
                 domains.map((_: string, index: number) => {
                     return (
-                        <>
+                        <React.Fragment key={'domain-index'}>
                             <DomainInput
                                 key={'domain-' + index}
                                 index={index}
@@ -36,7 +37,7 @@ export default function CreateProjectDomainInput({
                                     }}
                                 />
                             )}
-                        </>
+                        </React.Fragment>
                     )
                 })}
 
