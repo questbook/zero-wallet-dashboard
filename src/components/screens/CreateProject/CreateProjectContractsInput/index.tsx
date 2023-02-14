@@ -41,7 +41,7 @@ export default function CreateProjectContractsInput({
                                 <div
                                     key={'line-' + index}
                                     style={{
-                                        borderBottomColor: 'black',
+                                        borderBottomColor: 'gray.1',
                                         borderBottomWidth: 1,
                                         width: '720px',
                                     }}
