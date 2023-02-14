@@ -22,6 +22,11 @@ export default {
                 fontSize: '24px',
                 lineHeight: '32px',
             },
+            Body1Bold: {
+                fontWeight: '700',
+                fontSize: '14px',
+                lineHeight: '20px',
+            },
             title1Regular: {
                 fontWeight: '400',
                 fontSize: '16px',
