@@ -32,6 +32,11 @@ export default {
                 fontSize: '18px',
                 lineHeight: '24px',
             },
+            heading3Regular: {
+                fontWeight: '400',
+                fontSize: '24px',
+                lineHeight: '32px',
+            },
         },
     },
 }
