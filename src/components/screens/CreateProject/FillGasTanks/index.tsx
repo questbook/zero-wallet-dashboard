@@ -1,7 +1,7 @@
 import { GasTankType } from '@/types'
 import { Box, Divider, Text } from '@chakra-ui/react'
 import React from 'react'
-import GasTankFiller from './SingleGasTankFiller.ts'
+import GasTankFiller from './SingleGasTankFiller'
 
 
 interface Props {
@@ -21,7 +21,7 @@ export default function FillGasTanks({
             >
                 Add gas to your contract tanks
             </Text>
-            <br/>
+            <br />
             <Text
                 variant={'heading3Regular'}
                 color={'black.1'}
