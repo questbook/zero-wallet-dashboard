@@ -29,12 +29,13 @@ export default function Header() {
                 ml="auto"
                 gap={5}
             >
-                <Button variant="primary2">
-                    <Text variant="heading3Bold" color={'inherit'}>
-                        Contact us
-                    </Text>
-                </Button>
-
+                <a href="https://t.me/madhavanmalolan" target="_blank" rel="noreferrer">
+                    <Button variant="primary2" >
+                        <Text variant="heading3Bold" color={'inherit'}>
+                            Contact us
+                        </Text>
+                    </Button>
+                </a>
                 <Button gap={2} background="white">
                     <Image
                         borderRadius="3xl"

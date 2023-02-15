@@ -8,14 +8,11 @@ export default function Footer() {
     return (
         <Flex p={9}>
             <Flex as="footer" gap={5}>
-                <Link as={NextLink} href="#">
+                <Link as={NextLink} href="https://www.questbook.xyz/about">
                     About us
                 </Link>
-                <Link as={NextLink} href="#">
+                <Link as={NextLink} href="https://www.questbook.app/">
                     Explore Grants
-                </Link>
-                <Link as={NextLink} href="#">
-                    Terms of Service
                 </Link>
             </Flex>
 
