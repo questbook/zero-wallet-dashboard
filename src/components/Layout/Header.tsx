@@ -30,7 +30,7 @@ export default function Header() {
                 gap={5}
             >
                 <a href="https://t.me/madhavanmalolan" target="_blank" rel="noreferrer">
-                    <Button variant="primary2" >
+                    <Button variant={router.pathname === '/' ? "primary2" : "secondary2"} >
                         <Text variant="heading3Bold" color={'inherit'}>
                             Contact us
                         </Text>

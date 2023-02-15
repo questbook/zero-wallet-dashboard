@@ -232,13 +232,14 @@ const buttons = {
                 padding: '10px 20px',
                 background: '#EC5D2A',
                 borderRadius: '27px',
-                color: '#FFFFFF',
+                color: 'white',
                 _hover: { background: 'gray.200'},
             },
             secondary2: {
                 padding: '10px 20px',
                 borderRadius: '27px',
                 background: 'gray.1',
+                color: 'black.2',
                 _hover: { background: 'gray.200'},
             }
         },
