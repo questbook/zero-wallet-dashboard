@@ -1,7 +1,7 @@
 import { DEFAULT_CHAIN, SupportedChainIds } from '@/constants/chains'
 import { Button, Card, Flex, Image, Text, useToast, Box } from '@chakra-ui/react'
 import { ethers } from 'ethers'
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import CreateProjectContractsInput from './CreateProjectContractsInput'
 import CreateProjectNameInput from './CreateProjectNameInput'
 import CreateProjectDomainInput from './CreateProjectDomainInput'
@@ -10,6 +10,7 @@ import { isValidUrl } from '@/utils/checkers'
 import useOwnerAndWebHookAttributes from '@/hooks/useOwnerAndWebHookAttributes'
 import { createNewProjectWithGasTanks } from '@/api'
 import { GasTankType } from '@/types'
+import ProjectGasTanksCreationModal from './Modals/ProjectGasTanksCreationModal'
 
 const mockGasTank: GasTankType = {
     gas_tank_id: '0x123',
@@ -26,7 +27,7 @@ export default function CreateProject() {
     const ownerAndWebHookAttributes = useOwnerAndWebHookAttributes();
 
     // current step
-    const [step, setStep] = useState(3)
+    const [step, setStep] = useState(2)
 
     // step 1: name
     const [projectName, setProjectName] = useState<string>('')
@@ -42,6 +43,7 @@ export default function CreateProject() {
     // step 3: allowed domains
     const [domains, setDomains] = useState<Array<string>>([''])
     const [domainsError, setDomainsError] = useState<string>('')
+    const [isModalOpen, setIsModalOpen] = useState(true)
 
     // step 4: fill gas tanks
     const [gasTanks, setGasTanks] = useState<GasTankType[]>([mockGasTank, mockGasTank])
@@ -96,14 +98,18 @@ export default function CreateProject() {
                     })
                 }
                 else {
+                    setIsModalOpen(true)
                     createNewProjectWithGasTanks(ownerAndWebHookAttributes, projectName, contracts, contractsNetworks, domains)
                         .then((res) => {
                             setGasTanks(res.gasTanks)
+                            setIsModalOpen(false)
                             setStep(3)
                         })
-
                 }
             }
+        }
+        else if (step === 3){
+            
         }
     }
 
@@ -147,85 +153,89 @@ export default function CreateProject() {
     ]
 
     return (
-        <Card
-            width="100%"
-            paddingBlock={54}
-            alignItems="flex-start"
-            flexDirection={'column'}
-            display="flex"
-        >
-            <Flex flexDirection={'column'} w="100%" px="5">
-                {
-                    step <= 2 && <Text
-                        fontSize={'64px'}
-                        fontWeight={'700'}
-                        lineHeight={'72px'}
-                        marginBottom={'40px'}
-                    >
-                        Connect your Dapp
-                    </Text>
-                }
+        <Fragment>
+            <ProjectGasTanksCreationModal isOpen={isModalOpen} />
 
-                {steps[step]}
-                <Flex
-                    flexDirection={'row'}
-                    maxWidth={'100%'}
-                    width={'100%'}
-                    mt={10}
-                >
-                    {step > 0 && step < 3 && (
-                        <Button
-                            backgroundColor={'#E0DCD5'}
-                            borderRadius={'27px'}
-                            py='10px'
-                            pr='32px'
-                            pl='15px'
-                            color='black.2'
-                            onClick={prevClick}
-                            display='flex'
-                            alignItems={'center'}
-                            justifyContent='center'
-                            gap={3}
+            <Card
+                width="100%"
+                paddingBlock={54}
+                alignItems="flex-start"
+                flexDirection={'column'}
+                display="flex"
+            >
+                <Flex flexDirection={'column'} w="100%" px="5">
+                    {
+                        step <= 2 && <Text
+                            fontSize={'64px'}
+                            fontWeight={'700'}
+                            lineHeight={'72px'}
+                            marginBottom={'40px'}
                         >
-                            <Image
-                                src='/assets/ArrowLeft.svg'
-                                alt=''
-                                h='80%'
-                            />
-                            <Box>
-                                <Text
-                                    variant={'heading3Bold'}
-                                    color={'inherit'}
-                                >
-                                    Back
-                                </Text>
-                            </Box>
+                            Connect your Dapp
+                        </Text>
+                    }
 
+                    {steps[step]}
+                    <Flex
+                        flexDirection={'row'}
+                        maxWidth={'100%'}
+                        width={'100%'}
+                        mt={10}
+                    >
+                        {step > 0 && step < 3 && (
+                            <Button
+                                backgroundColor={'#E0DCD5'}
+                                borderRadius={'27px'}
+                                py='10px'
+                                pr='32px'
+                                pl='15px'
+                                color='black.2'
+                                onClick={prevClick}
+                                display='flex'
+                                alignItems={'center'}
+                                justifyContent='center'
+                                gap={3}
+                            >
+                                <Image
+                                    src='/assets/ArrowLeft.svg'
+                                    alt=''
+                                    h='80%'
+                                />
+                                <Box>
+                                    <Text
+                                        variant={'heading3Bold'}
+                                        color={'inherit'}
+                                    >
+                                        Back
+                                    </Text>
+                                </Box>
+
+
+                            </Button>
+                        )}
+                        <Button
+                            backgroundColor={'#EC5D2A'}
+                            borderRadius={'27px'}
+                            onClick={nextClick}
+                            color='white'
+                            // p='10 32'
+                            py='10px'
+                            px='32px'
+                            ml={'auto'}
+                        >
+                            <Text
+                                variant={'heading3Bold'}
+                                color={'inherit'}
+                            >
+                                {
+                                    step === 3 ? "Add zero to your Dapp" : "Continue"
+                                }
+                            </Text>
 
                         </Button>
-                    )}
-                    <Button
-                        backgroundColor={'#EC5D2A'}
-                        borderRadius={'27px'}
-                        onClick={nextClick}
-                        color='white'
-                        // p='10 32'
-                        py='10px'
-                        px='32px'
-                        ml={'auto'}
-                    >
-                        <Text
-                            variant={'heading3Bold'}
-                            color={'inherit'}
-                        >
-                            {
-                                step === 3 ? "Add zero to your Dapp" : "Continue"
-                            }
-                        </Text>
-
-                    </Button>
+                    </Flex>
                 </Flex>
-            </Flex>
-        </Card>
+            </Card>
+        </Fragment>
     )
 }
