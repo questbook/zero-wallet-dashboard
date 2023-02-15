@@ -1,5 +1,5 @@
-import { motion, isValidMotionProp } from 'framer-motion'
-import { chakra, shouldForwardProp, Text, TextProps } from '@chakra-ui/react'
+import { motion, isValidMotionProp, AnimatePresence } from 'framer-motion'
+import { Box, chakra, shouldForwardProp, Text, TextProps } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 
 type Props = TextProps & {
@@ -10,9 +10,9 @@ type Props = TextProps & {
 }
 
 const variants = {
-    enter: (direction: number) => {
+    enter: () => {
         return {
-            y: direction > 0 ? 10 : -10,
+            y: 50,
             opacity: 0,
         }
     },
@@ -21,11 +21,11 @@ const variants = {
         y: 0,
         opacity: 1,
     },
-    exit: (direction: number) => {
+    exit: () => {
         return {
             zIndex: 0,
-            y: direction < 0 ? 10 : -10,
-            // opacity: 0
+            y: -20,
+            opacity: 0,
         }
     },
 }
@@ -59,26 +59,28 @@ export default function TextFade({
     }, [cooldownTime, textListLength])
 
     return (
-        <ChakraBox
-            // as={Text}
-            // variant={'heading1'}
-            variants={variants}
-            initial={variants.enter(1)}
-            animate={'center'}
-            exit={variants.exit(1)}
-            key={currentTextIndex}
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore no problem in operation, although type error appears.
-            transition={{
-                duration: morphTime,
-                ease: 'easeInOut',
-                repeatType: 'loop',
-            }}
-            m={'0'}
-        >
-            <Text {...rest} color={textColorList[currentTextIndex]}>
-                {textList[currentTextIndex]}
-            </Text>
-        </ChakraBox>
+        <Box overflow={'hidden'} p='1'>
+            <AnimatePresence mode='popLayout' initial={false}>
+                <ChakraBox
+                    variants={variants}
+                    initial={'enter'}
+                    animate={'center'}
+                    exit={'exit'}
+                    key={currentTextIndex}
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore no problem in operation, although type error appears.
+                    transition={{
+                        duration: morphTime,
+                        delay: 0.05,
+                        ease: 'easeInOut',
+                        repeatType: 'loop',
+                    }}
+                >
+                    <Text {...rest} color={textColorList[currentTextIndex]}>
+                        {textList[currentTextIndex]}
+                    </Text>
+                </ChakraBox>
+            </AnimatePresence>
+        </Box>
     )
 }

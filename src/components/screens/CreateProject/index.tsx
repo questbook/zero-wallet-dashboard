@@ -1,21 +1,55 @@
-import { SupportedChainIds } from '@/constants/chains'
-import { Button, Card, Flex, Text } from '@chakra-ui/react'
+import { DEFAULT_CHAIN, SupportedChainIds } from '@/constants/chains'
+import { Button, Card, Flex, Image, Text, useToast, Box } from '@chakra-ui/react'
 import { ethers } from 'ethers'
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import CreateProjectContractsInput from './CreateProjectContractsInput'
 import CreateProjectNameInput from './CreateProjectNameInput'
+import CreateProjectDomainInput from './CreateProjectDomainInput'
+import FillGasTanks from './FillGasTanks'
+import { isValidUrl } from '@/utils/checkers'
+import useOwnerAndWebHookAttributes from '@/hooks/useOwnerAndWebHookAttributes'
+import { createNewProjectWithGasTanks } from '@/api'
+import { GasTankType } from '@/types'
+import ProjectGasTanksCreationModal from './Modals/ProjectGasTanksCreationModal'
+
+const mockGasTank: GasTankType = {
+    gas_tank_id: '0x123',
+    project_id: '1242-fdsdv-123',
+    created_at: '2021-09-01T00:00:00.000Z',
+    chain_id: '5',
+    provider_url: '',
+    funding_key: '1772',
+    whitelist: ['0x123', '0x456'],
+    balance: '0',
+}
 
 export default function CreateProject() {
+    const ownerAndWebHookAttributes = useOwnerAndWebHookAttributes();
+
+    // current step
+    const [step, setStep] = useState(2)
+
+    // step 1: name
     const [projectName, setProjectName] = useState<string>('')
     const [projectNameError, setProjectNameError] = useState<string>('')
 
+    // step 2: contract whitelist
     const [contracts, setContracts] = useState<Array<string>>([''])
     const [contractsNetworks, setContractsNetworks] = useState<
         Array<SupportedChainIds>
-    >([])
+    >([DEFAULT_CHAIN])
     const [contractsError, setContractsError] = useState<string>('')
 
-    const [step, setStep] = useState(0)
+    // step 3: allowed domains
+    const [domains, setDomains] = useState<Array<string>>([''])
+    const [domainsError, setDomainsError] = useState<string>('')
+    const [isModalOpen, setIsModalOpen] = useState(true)
+
+    // step 4: fill gas tanks
+    const [gasTanks, setGasTanks] = useState<GasTankType[]>([mockGasTank, mockGasTank])
+
+    // ui
+    const toast = useToast()
 
     const nextClick = () => {
         if (step === 0) {
@@ -26,9 +60,7 @@ export default function CreateProject() {
                 setStep(1)
             }
             return
-        }
-
-        if (step === 1) {
+        } else if (step === 1) {
             let error = false
             contracts.forEach((contract: string) => {
                 if (!ethers.utils.isAddress(contract)) {
@@ -49,6 +81,35 @@ export default function CreateProject() {
                 setStep(2)
             }
             return
+        } else if (step === 2) {
+            const error = domains.some((domain) => !isValidUrl(domain))
+            if (error) {
+                setDomainsError(
+                    'Invalid domains / At least one valid domain is required.'
+                )
+            } else {
+                setDomainsError('')
+                if (!ownerAndWebHookAttributes) {
+                    toast({
+                        title: 'Error',
+                        description: 'Please connect your wallet.',
+                        status: 'error',
+                        isClosable: true,
+                    })
+                }
+                else {
+                    setIsModalOpen(true)
+                    createNewProjectWithGasTanks(ownerAndWebHookAttributes, projectName, contracts, contractsNetworks, domains)
+                        .then((res) => {
+                            setGasTanks(res.gasTanks)
+                            setIsModalOpen(false)
+                            setStep(3)
+                        })
+                }
+            }
+        }
+        else if (step === 3){
+            
         }
     }
 
@@ -69,7 +130,7 @@ export default function CreateProject() {
             errorText={projectNameError}
             setName={setProjectName}
             name={projectName}
-            key={1}
+            key={'child-1'}
         />,
         <CreateProjectContractsInput
             setContracts={setContracts}
@@ -77,71 +138,104 @@ export default function CreateProject() {
             contractsNetworks={contractsNetworks}
             setContractsNetworks={setContractsNetworks}
             contractsError={contractsError}
-            key={2}
+            key={'child-2'}
         />,
-        <div key={3}>Step 3</div>,
+        <CreateProjectDomainInput
+            key={'child-3'}
+            domains={domains}
+            setDomains={setDomains}
+            domainsError={domainsError}
+        />,
+        <FillGasTanks
+            key={'child-4'}
+            gasTanks={gasTanks}
+        />,
     ]
 
     return (
-        <Card
-            width="100%"
-            paddingBlock={54}
-            alignItems="flex-start"
-            flexDirection={'column'}
-            display="flex"
-        >
-            <Flex flexDirection={'column'} w="100%" px="5">
-                <Text
-                    fontSize={'64px'}
-                    fontWeight={'700'}
-                    lineHeight={'72px'}
-                    marginBottom={'40px'}
-                >
-                    {step <= 2 ? 'Connect your Dapp' : 'Connect'}
-                </Text>
-                {steps[step]}
-                <Flex
-                    flexDirection={'row'}
-                    maxWidth={'100%'}
-                    width={'100%'}
-                    mt={10}
-                >
-                    {step > 0 && (
-                        <Button
-                            backgroundColor={'#E0DCD5'}
-                            borderRadius={'27px'}
-                            alignItems="flex-end"
-                            fontStyle={'normal'}
+        <Fragment>
+            <ProjectGasTanksCreationModal isOpen={isModalOpen} />
+
+            <Card
+                width="100%"
+                paddingBlock={54}
+                alignItems="flex-start"
+                flexDirection={'column'}
+                display="flex"
+            >
+                <Flex flexDirection={'column'} w="100%" px="5">
+                    {
+                        step <= 2 && <Text
+                            fontSize={'64px'}
                             fontWeight={'700'}
-                            fontSize={'24px'}
-                            color="#403D39"
-                            lineHeight={'32px'}
-                            padding="10px 20px"
-                            width="134px"
-                            height="52px"
-                            onClick={prevClick}
+                            lineHeight={'72px'}
+                            marginBottom={'40px'}
                         >
-                            Back
-                        </Button>
-                    )}
-                    <Button
-                        backgroundColor={'#EC5D2A'}
-                        borderRadius={'27px'}
-                        fontStyle={'normal'}
-                        fontWeight={'700'}
-                        fontSize={'24px'}
-                        color="white"
-                        alignSelf="flex-end"
-                        lineHeight={'32px'}
-                        width="172px"
-                        height="52px"
-                        onClick={nextClick}
-                        ml={'auto'}
+                            Connect your Dapp
+                        </Text>
+                    }
+
+                    {steps[step]}
+                    <Flex
+                        flexDirection={'row'}
+                        maxWidth={'100%'}
+                        width={'100%'}
+                        mt={10}
                     >
-                        Continue
-                    </Button>
+                        {step > 0 && step < 3 && (
+                            <Button
+                                backgroundColor={'#E0DCD5'}
+                                borderRadius={'27px'}
+                                py='10px'
+                                pr='32px'
+                                pl='15px'
+                                color='black.2'
+                                onClick={prevClick}
+                                display='flex'
+                                alignItems={'center'}
+                                justifyContent='center'
+                                gap={3}
+                            >
+                                <Image
+                                    src='/assets/ArrowLeft.svg'
+                                    alt=''
+                                    h='80%'
+                                />
+                                <Box>
+                                    <Text
+                                        variant={'heading3Bold'}
+                                        color={'inherit'}
+                                    >
+                                        Back
+                                    </Text>
+                                </Box>
+
+
+                            </Button>
+                        )}
+                        <Button
+                            backgroundColor={'#EC5D2A'}
+                            borderRadius={'27px'}
+                            onClick={nextClick}
+                            color='white'
+                            // p='10 32'
+                            py='10px'
+                            px='32px'
+                            ml={'auto'}
+                        >
+                            <Text
+                                variant={'heading3Bold'}
+                                color={'inherit'}
+                            >
+                                {
+                                    step === 3 ? "Add zero to your Dapp" : "Continue"
+                                }
+                            </Text>
+
+                        </Button>
+                    </Flex>
                 </Flex>
-            </Flex>
-        </Card>
+            </Card>
+        </Fragment>
     )
 }

@@ -4,7 +4,6 @@ import TextFade from '@/components/UI/animations/TextFade'
 import { useRouter } from 'next/router'
 
 export default function Home() {
-
     const router = useRouter()
 
     const handleClick = () => {
@@ -32,12 +31,12 @@ export default function Home() {
                     <TextFade
                         textList={[
                             'pay gas fees..',
-                            'have to Metamask installed..',
+                            'have to get Metamask installed..',
                             'switch networks..',
                         ]}
                         textColorList={['mulberry', 'blue.1', 'amaranth']}
                         cooldownTime={3}
-                        morphTime={0.5}
+                        morphTime={0.1}
                         variant={'heading1Bold'}
                         color={'black.1'}
                     />
@@ -52,7 +51,11 @@ export default function Home() {
                             <Text variant="heading1Bold" color={'black.3'}>
                                 Gasless transactions for your Dapp.
                             </Text>
-                            <Button variant={'primary2'} mt="20" onClick={handleClick}>
+                            <Button
+                                variant={'primary2'}
+                                mt="20"
+                                onClick={handleClick}
+                            >
                                 <Text variant={'heading3Bold'} color="white">
                                     Add Zero to Your Dapp
                                 </Text>
@@ -71,7 +74,7 @@ export default function Home() {
                     </Flex>
                 </Card>
 
-                <Card h="600px" my="10" borderRadius={'24px'}>
+                <Card h="600px" my="10" borderRadius={'24px'} backgroundColor='#FFFFFF'>
                     <Flex h="100%">
                         <Box w="50%" py={'10'} px={12} h="100%">
                             <Text
@@ -94,7 +97,11 @@ export default function Home() {
                                 Your users always pay $0.
                             </Text>
                             <br />
-                            <Button variant={'primary2'} mt="20" onClick={handleClick}>
+                            <Button
+                                variant={'primary2'}
+                                mt="20"
+                                onClick={handleClick}
+                            >
                                 <Text variant={'heading3Bold'} color="white">
                                     Add Zero to Your Dapp
                                 </Text>

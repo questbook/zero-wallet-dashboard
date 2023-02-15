@@ -1,4 +1,4 @@
-import { extendTheme } from '@chakra-ui/react'
+import { extendTheme, type ThemeConfig } from '@chakra-ui/react'
 import colors from 'src/theme/colors'
 import button from 'src/theme/components/button'
 import container from 'src/theme/components/container'
@@ -9,7 +9,13 @@ import link from 'src/theme/components/link'
 import progress from 'src/theme/components/progress'
 import text from 'src/theme/components/text'
 
+const config: ThemeConfig = {
+    initialColorMode: 'light',
+    useSystemColorMode: false,
+}
+
 const theme = extendTheme({
+    config,
     fonts: {
         button: 'Inter, Neue-Haas-Grotesk-Display, sans-serif',
         text: 'Inter, Neue-Haas-Grotesk-Display, sans-serif',

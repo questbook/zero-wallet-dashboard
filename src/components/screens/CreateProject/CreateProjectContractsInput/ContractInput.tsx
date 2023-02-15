@@ -1,9 +1,10 @@
 import TextField from '@/components/UI/TextField/TextField'
 import { CloseIcon } from '@chakra-ui/icons'
-import { Flex, IconButton, Text, Image, Select } from '@chakra-ui/react'
+import { Flex, IconButton, Text, Image } from '@chakra-ui/react'
 import { useEffect, useMemo, useState } from 'react'
 import { ethers } from 'ethers'
-import { CHAIN_NAMES, SupportedChainIds } from '@/constants/chains'
+import { CHAIN_ICONS, CHAIN_NAMES, SupportedChainIds } from '@/constants/chains'
+import Dropdown from '@/components/UI/Dropdown.tsx'
 
 interface Props {
     index: number
@@ -23,12 +24,9 @@ export default function ContractInput({
     setContractsNetworks,
 }: Props) {
     const [contractState, setContractState] = useState(0)
-    const networks = [
-        SupportedChainIds.POLYGON,
-        SupportedChainIds.OPTIMISM,
-        SupportedChainIds.CELO,
-        SupportedChainIds.GOERLI,
-    ]
+    const networks = Object.keys(SupportedChainIds).filter((v) =>
+        isNaN(Number(v))
+    ) as (keyof typeof SupportedChainIds)[]
 
     useEffect(() => {
         if (contractsNetworks[index]) {
@@ -56,7 +54,7 @@ export default function ContractInput({
                 />,
             ],
         ]
-    }, [networks])
+    }, [])
 
     return (
         <Flex
@@ -101,19 +99,27 @@ export default function ContractInput({
                     >
                         NETWORK ON WHICH CONTRACT IS DEPLOYED
                     </Text>
-                    <Select
-                        placeholder="Select Network"
-                        onChange={(e) => {
-                            e.preventDefault()
+                    <Dropdown
+                        handleChange={(newElem) => {
                             const newContractsNetworks = [...contractsNetworks]
-                            newContractsNetworks[index] = parseInt(
-                                e.target.value
-                            )
+                            newContractsNetworks[index] = newElem.value
                             setContractsNetworks(newContractsNetworks)
                         }}
-                        value={contractsNetworks[index]}
-                    >
-                        {networks.map((network, index) => {
+                        selectedItem={{
+                            label: CHAIN_NAMES[contractsNetworks[index]],
+                            value: contractsNetworks[index],
+                            iconPath: CHAIN_ICONS[contractsNetworks[index]],
+                        }}
+                        listItems={networks.map((network) => {
+                            const keyNetwork = SupportedChainIds[network]
+                            return {
+                                value: keyNetwork,
+                                label: CHAIN_NAMES[keyNetwork],
+                                iconPath: CHAIN_ICONS[keyNetwork],
+                            }
+                        })}
+                    />
+                    {/* {networks.map((network, index) => {
                             return (
                                 <option
                                     key={'network-input-' + index}
@@ -122,8 +128,8 @@ export default function ContractInput({
                                     {CHAIN_NAMES[network]}
                                 </option>
                             )
-                        })}
-                    </Select>
+                        })} */}
+                    {/* </Dropdown> */}
                 </Flex>
             </Flex>
             {contracts.length > 1 && (

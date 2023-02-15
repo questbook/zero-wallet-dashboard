@@ -233,8 +233,14 @@ const buttons = {
                 background: '#EC5D2A',
                 borderRadius: '27px',
                 color: '#FFFFFF',
-                _hover: { background: 'red' },
+                _hover: { background: 'gray.200'},
             },
+            secondary2: {
+                padding: '10px 20px',
+                borderRadius: '27px',
+                background: 'gray.1',
+                _hover: { background: 'gray.200'},
+            }
         },
     },
 }

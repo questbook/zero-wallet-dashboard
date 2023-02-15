@@ -1,5 +1,6 @@
-import { SupportedChainIds } from '@/constants/chains'
+import { DEFAULT_CHAIN, SupportedChainIds } from '@/constants/chains'
 import { Button, Flex, Text } from '@chakra-ui/react'
+import React from 'react'
 import ContractInput from './ContractInput'
 
 interface Props {
@@ -24,7 +25,9 @@ export default function CreateProjectContractsInput({
             {contracts.length > 0 &&
                 contracts.map((_: string, index: number) => {
                     return (
-                        <>
+                        <React.Fragment
+                            key={'contract-fragment-' + index}
+                        >
                             <ContractInput
                                 key={'contract-' + index}
                                 index={index}
@@ -38,13 +41,13 @@ export default function CreateProjectContractsInput({
                                 <div
                                     key={'line-' + index}
                                     style={{
-                                        borderBottomColor: 'black',
+                                        borderBottomColor: 'gray.1',
                                         borderBottomWidth: 1,
                                         width: '720px',
                                     }}
                                 />
                             )}
-                        </>
+                        </React.Fragment>
                     )
                 })}
 
@@ -64,6 +67,7 @@ export default function CreateProjectContractsInput({
                 height="52px"
                 onClick={() => {
                     setContracts([...contracts, ''])
+                    setContractsNetworks([...contractsNetworks, DEFAULT_CHAIN])
                 }}
             >
                 Add another contract
