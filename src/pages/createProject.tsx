@@ -1,6 +1,6 @@
 import CreateProjectComponent from '../components/screens/CreateProject'
 import { Flex, Spinner, Text } from '@chakra-ui/react'
-import { useConnect, useSigner } from 'wagmi'
+import { useAccount, useConnect, useSigner } from 'wagmi'
 import { ZeroWalletSigner } from 'zero-wallet-wagmi-connector'
 import { useContext, useEffect } from 'react'
 import { ProjectsContext } from './_app'
@@ -9,6 +9,7 @@ export default function CreateProject() {
 
     const { data: signer } = useSigner<ZeroWalletSigner>()
     const { connectAsync, connectors } = useConnect()
+    const { isConnected } = useAccount()
     const { doesScwExist, setDoesScwExist } =
         useContext(ProjectsContext)!;
 
@@ -25,11 +26,12 @@ export default function CreateProject() {
 
             }
             else {
-                await connectAsync({ connector: connectors[0] })
+                if (!isConnected)
+                    await connectAsync({ connector: connectors[0] })
             }
         };
         func();
-    }, [signer, connectAsync, connectors])
+    }, [signer, connectAsync, connectors, isConnected])
 
     if (!doesScwExist) {
         return (

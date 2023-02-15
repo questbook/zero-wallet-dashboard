@@ -1,19 +1,32 @@
 import { DEFAULT_CHAIN, SupportedChainIds } from '@/constants/chains'
-import { Button, Card, Flex, Text, useToast } from '@chakra-ui/react'
+import { Button, Card, Flex, Image, Text, useToast, Box } from '@chakra-ui/react'
 import { ethers } from 'ethers'
 import { useState } from 'react'
 import CreateProjectContractsInput from './CreateProjectContractsInput'
 import CreateProjectNameInput from './CreateProjectNameInput'
 import CreateProjectDomainInput from './CreateProjectDomainInput'
+import FillGasTanks from './FillGasTanks'
 import { isValidUrl } from '@/utils/checkers'
 import useOwnerAndWebHookAttributes from '@/hooks/useOwnerAndWebHookAttributes'
 import { createNewProjectWithGasTanks } from '@/api'
+import { GasTankType } from '@/types'
+
+const mockGasTank: GasTankType = {
+    gas_tank_id: '0x123',
+    project_id: '1242-fdsdv-123',
+    created_at: '2021-09-01T00:00:00.000Z',
+    chain_id: '5',
+    provider_url: '',
+    funding_key: '1772',
+    whitelist: ['0x123', '0x456'],
+    balance: '0',
+}
 
 export default function CreateProject() {
     const ownerAndWebHookAttributes = useOwnerAndWebHookAttributes();
 
     // current step
-    const [step, setStep] = useState(0)
+    const [step, setStep] = useState(3)
 
     // step 1: name
     const [projectName, setProjectName] = useState<string>('')
@@ -29,6 +42,9 @@ export default function CreateProject() {
     // step 3: allowed domains
     const [domains, setDomains] = useState<Array<string>>([''])
     const [domainsError, setDomainsError] = useState<string>('')
+
+    // step 4: fill gas tanks
+    const [gasTanks, setGasTanks] = useState<GasTankType[]>([mockGasTank, mockGasTank])
 
     // ui
     const toast = useToast()
@@ -80,7 +96,12 @@ export default function CreateProject() {
                     })
                 }
                 else {
-                    createNewProjectWithGasTanks(ownerAndWebHookAttributes, projectName, contracts, contractsNetworks, domains);
+                    createNewProjectWithGasTanks(ownerAndWebHookAttributes, projectName, contracts, contractsNetworks, domains)
+                        .then((res) => {
+                            setGasTanks(res.gasTanks)
+                            setStep(3)
+                        })
+
                 }
             }
         }
@@ -119,6 +140,10 @@ export default function CreateProject() {
             setDomains={setDomains}
             domainsError={domainsError}
         />,
+        <FillGasTanks
+            key={'child-4'}
+            gasTanks={gasTanks}
+        />,
     ]
 
     return (
@@ -130,14 +155,17 @@ export default function CreateProject() {
             display="flex"
         >
             <Flex flexDirection={'column'} w="100%" px="5">
-                <Text
-                    fontSize={'64px'}
-                    fontWeight={'700'}
-                    lineHeight={'72px'}
-                    marginBottom={'40px'}
-                >
-                    {step <= 2 ? 'Connect your Dapp' : 'Connect'}
-                </Text>
+                {
+                    step <= 2 && <Text
+                        fontSize={'64px'}
+                        fontWeight={'700'}
+                        lineHeight={'72px'}
+                        marginBottom={'40px'}
+                    >
+                        Connect your Dapp
+                    </Text>
+                }
+
                 {steps[step]}
                 <Flex
                     flexDirection={'row'}
@@ -145,39 +173,56 @@ export default function CreateProject() {
                     width={'100%'}
                     mt={10}
                 >
-                    {step > 0 && (
+                    {step > 0 && step < 3 && (
                         <Button
                             backgroundColor={'#E0DCD5'}
                             borderRadius={'27px'}
-                            alignItems="flex-end"
-                            fontStyle={'normal'}
-                            fontWeight={'700'}
-                            fontSize={'24px'}
-                            color="#403D39"
-                            lineHeight={'32px'}
-                            padding="10px 20px"
-                            width="134px"
-                            height="52px"
+                            py='10px'
+                            pr='32px'
+                            pl='15px'
+                            color='black.2'
                             onClick={prevClick}
+                            display='flex'
+                            alignItems={'center'}
+                            justifyContent='center'
+                            gap={3}
                         >
-                            Back
+                            <Image
+                                src='/assets/ArrowLeft.svg'
+                                alt=''
+                                h='80%'
+                            />
+                            <Box>
+                                <Text
+                                    variant={'heading3Bold'}
+                                    color={'inherit'}
+                                >
+                                    Back
+                                </Text>
+                            </Box>
+
+
                         </Button>
                     )}
                     <Button
                         backgroundColor={'#EC5D2A'}
                         borderRadius={'27px'}
-                        fontStyle={'normal'}
-                        fontWeight={'700'}
-                        fontSize={'24px'}
-                        color="white"
-                        alignSelf="flex-end"
-                        lineHeight={'32px'}
-                        width="172px"
-                        height="52px"
                         onClick={nextClick}
+                        color='white'
+                        // p='10 32'
+                        py='10px'
+                        px='32px'
                         ml={'auto'}
                     >
-                        Continue
+                        <Text
+                            variant={'heading3Bold'}
+                            color={'inherit'}
+                        >
+                            {
+                                step === 3 ? "Add zero to your Dapp" : "Continue"
+                            }
+                        </Text>
+
                     </Button>
                 </Flex>
             </Flex>
