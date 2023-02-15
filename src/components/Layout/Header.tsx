@@ -30,7 +30,7 @@ export default function Header() {
                 gap={5}
             >
                 <Button variant="primary2">
-                    <Text variant="heading3Bold" color="white">
+                    <Text variant="heading3Bold" color={'inherit'}>
                         Contact us
                     </Text>
                 </Button>
