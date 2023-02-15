@@ -42,6 +42,12 @@ export default {
                 fontSize: '24px',
                 lineHeight: '32px',
             },
+            code: {
+                fontFamily:'mono',
+                fontWeight: '500',
+                fontSize: '18px',
+                lineHeight: '32px',
+            }
         },
     },
 }
