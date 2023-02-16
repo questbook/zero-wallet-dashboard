@@ -9,6 +9,7 @@ import DomainModifier from "./DomainModifier";
 interface Props {
     nameUpdated: string,
     setNameUpdated: (newValue: string) => void,
+    nameUpdatedError: string,
 
     setContracts: (newContracts: Array<string>) => void
     contracts: Array<string>
@@ -26,6 +27,8 @@ interface Props {
 export default function EditProjectCard({
     nameUpdated,
     setNameUpdated,
+    nameUpdatedError,
+
     contracts,
     setContracts,
     contractsNetworks,
@@ -45,7 +48,6 @@ export default function EditProjectCard({
             p='10'
             my='50'
         >
-
             <TextField
                 label={'Dapp Name'}
                 placeholder={'Axie Infinity'}
@@ -53,6 +55,7 @@ export default function EditProjectCard({
                 fontSize={'24px'}
                 fontWeight={'700'}
                 width={'720px'}
+                errorText={nameUpdatedError}
                 onChange={(e) => setNameUpdated(e.target.value)}
             />
 
