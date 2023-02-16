@@ -67,7 +67,7 @@ export default function GasTankFiller({ gasTank }: Props) {
 
                 <Box m="5">
                     <Text variant="heading3Regular" color="black.1" mr="auto">
-                        {formatAddress(gasTank.gas_tank_id)}
+                        {formatAddress(contractAddress)}
                     </Text>
                     <Flex>
                         <Image

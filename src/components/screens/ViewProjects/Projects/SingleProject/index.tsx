@@ -1,6 +1,7 @@
 import CopyableText from '@/components/UI/CopyableText'
 import { IProject } from '@/types'
 import { Card, Text, Flex, Button, Image, Box, Divider } from '@chakra-ui/react'
+import { useRouter } from 'next/router'
 import { Fragment } from 'react'
 import SingleGasTankFiller from './SingleGasTankFiller'
 
@@ -9,6 +10,9 @@ interface Props {
 }
 
 export default function SingleProject({ project }: Props) {
+
+    const router = useRouter()
+
     return (
         <Card borderRadius="24px" backgroundColor="white" p="10" my="50">
             <Flex flexDirection={'row'} mb="20">
@@ -16,7 +20,7 @@ export default function SingleProject({ project }: Props) {
                     {project.name}
                 </Text>
 
-                <Button variant={'secondary2'} ml="auto" gap={2}>
+                <Button onClick={() => router.push(`/editProject/${project.project_id}`)} variant={'secondary2'} ml="auto" gap={2}>
                     <Image src="/assets/Edit.svg" alt="" />
                     <Text variant={'heading3Bold'}>Edit Dapp</Text>
                 </Button>
@@ -56,13 +60,16 @@ export default function SingleProject({ project }: Props) {
                     color="white"
                 >
                     <Text color={'inherit'} variant="code">
-                        const zeroWalletConnectorOptions:
-                        ZeroWalletConnectorOptions = &#x2775;
-                        jsonRpcProviderUrls: &#x2775;5:
-                        `https://eth-goerli.g.alchemy.com/v2/$
-                        {process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`, &#x2775;,
-                        store: &rsquo;browser&rsquo;, zeroWalletServerDomain:
-                        process.env.NEXT_PUBLIC_BACKEND_DOMA
+                        const zeroWalletConnectorOptions: ZeroWalletConnectorOptions = {'{'} <br />
+                        &emsp; zeroWalletProjectApiKey: {'<'}YourPrivateKey{'>'}
+                        <br />
+                        {'}'}
+                        <br />
+                        const connector = new ZeroWalletConnector({'{'} <br />
+                        &emsp; chains: [chain.goerli], <br />
+                        &emsp; options: zeroWalletConnectorOptions, <br />
+                        {'}'})
+
                     </Text>
 
                     <br />

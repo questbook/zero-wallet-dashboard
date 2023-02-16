@@ -8,12 +8,11 @@ import { ethers } from 'ethers'
 import { useRouter } from 'next/router'
 import { useContext, useState } from 'react'
 import { ProjectsContext } from '../_app'
-import { encode } from 'querystring'
 
 export default function EditProject() {
     const { projects } = useContext(ProjectsContext)!
     const router = useRouter()
-    const projectId = encode(router.query)
+    const { id: projectId } = router.query
 
     const project = projects!.find((proj) => proj.project_id === projectId)
 

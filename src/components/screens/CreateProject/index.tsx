@@ -20,9 +20,11 @@ import { createNewProjectWithGasTanks } from '@/api'
 import { GasTankType } from '@/types'
 import ProjectGasTanksCreationModal from './Modals/ProjectGasTanksCreationModal'
 import { ProjectsContext } from '@/pages/_app'
+import { useRouter } from 'next/router'
 
 export default function CreateProject() {
     const { projects } = useContext(ProjectsContext)!
+    const router = useRouter()
 
     const ownerAndWebHookAttributes = useOwnerAndWebHookAttributes()
 
@@ -43,7 +45,7 @@ export default function CreateProject() {
     // step 3: allowed domains
     const [domains, setDomains] = useState<Array<string>>([''])
     const [domainsError, setDomainsError] = useState<string>('')
-    const [isModalOpen, setIsModalOpen] = useState(true)
+    const [isModalOpen, setIsModalOpen] = useState(false)
 
     // step 4: fill gas tanks
     const [gasTanks, setGasTanks] = useState<GasTankType[]>([])
@@ -116,6 +118,7 @@ export default function CreateProject() {
                 }
             }
         } else if (step === 3) {
+            router.push('/viewProjects')
         }
     }
 
@@ -219,7 +222,6 @@ export default function CreateProject() {
                             borderRadius={'27px'}
                             onClick={nextClick}
                             color="white"
-                            // p='10 32'
                             py="10px"
                             px="32px"
                             ml={'auto'}
