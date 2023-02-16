@@ -128,22 +128,22 @@ export default function CreateProject() {
     const steps = [
         <CreateProjectNameInput
             errorText={projectNameError}
-            setName={setProjectName}
+            setName={(newValue) => setProjectName(newValue)}
             name={projectName}
             key={'child-1'}
         />,
         <CreateProjectContractsInput
-            setContracts={setContracts}
+            setContracts={(newValue) => setContracts(newValue)}
             contracts={contracts}
             contractsNetworks={contractsNetworks}
-            setContractsNetworks={setContractsNetworks}
+            setContractsNetworks={(newValue) => setContractsNetworks(newValue)}
             contractsError={contractsError}
             key={'child-2'}
         />,
         <CreateProjectDomainInput
             key={'child-3'}
             domains={domains}
-            setDomains={setDomains}
+            setDomains={(newValue) => setDomains(newValue)}
             domainsError={domainsError}
         />,
         <FillGasTanks
