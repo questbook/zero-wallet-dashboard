@@ -1,13 +1,17 @@
 import getAvatar from '@/utils/avatarUtils'
-import { formatAddress } from '@/utils/formattingUtils'
-import { Button, Flex, Image, Text } from '@chakra-ui/react'
+import { formatAddress, formatAddressLong } from '@/utils/formattingUtils'
+import { useClipboard, Button, Flex, Image, Text, PopoverTrigger, PopoverArrow, PopoverBody, PopoverContent, Popover } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
+import { useRef } from 'react'
+import { useAccount } from 'wagmi'
 
 // header component with wagmi connect button
 export default function Header() {
-    // const { address, isConnected } = useAccount()
-    const address = '0x78d86E031605d2873f38dfa2657Fe92d8aC243f9'
+    const { address } = useAccount()
+    const zeroAddress = '0x000000000000000'
     const router = useRouter()
+    const popoverRef = useRef<HTMLButtonElement>(null)
+    const { onCopy } = useClipboard(address || '')
 
     return (
         <Flex as="header" p={4}>
@@ -44,16 +48,69 @@ export default function Header() {
                         </Text>
                     </Button>
                 </a>
-                <Button gap={2} background="white">
-                    <Image
-                        borderRadius="3xl"
-                        src={getAvatar(false, address ?? 'generic')}
-                        boxSize="24px"
-                        alt="avatar"
-                    />
 
-                    {formatAddress(address)}
-                </Button>
+                <Popover
+                    placement='bottom-end'
+                    isLazy
+                    initialFocusRef={popoverRef}>
+                    <PopoverTrigger>
+                        <Button gap={2} background="white">
+                            <Image
+                                borderRadius="3xl"
+                                src={getAvatar(false, address ?? 'generic')}
+                                boxSize="24px"
+                                alt="avatar"
+                            />
+
+                            {address ? formatAddress(address) : formatAddress(zeroAddress)}
+                        </Button>
+                    </PopoverTrigger>
+                    <PopoverContent>
+                        <PopoverArrow />
+                        <PopoverBody>
+                            <Flex
+                                direction='column'
+                                align='stretch'
+                                bg='white'
+                                gap={3}
+                            >
+                                <Text
+                                    variant={'Body1Bold'}
+                                    color='black.2'
+                                >
+                                    Your zero wallet
+                                </Text>
+                                <Text
+                                    variant='title1Regular'
+                                    color={'black.2'}
+                                    mb='3'
+                                >
+                                    {formatAddressLong(address || zeroAddress)}
+                                </Text>
+
+                                <Flex>
+                                    <Image
+                                        src='/assets/Keys.svg'
+                                        alt='key'
+                                    />
+                                    <Text
+                                        ml={2}
+                                        _hover={{ textDecoration: 'underline', cursor: 'pointer' }}
+                                        onClick={
+                                            () => {
+                                                onCopy()
+                                            }
+                                        }
+                                        variant='title1Regular'
+                                        color={'black.2'}
+                                    >
+                                        Save wallet key
+                                    </Text>
+                                </Flex>
+                            </Flex>
+                        </PopoverBody>
+                    </PopoverContent>
+                </Popover>
             </Flex>
         </Flex>
     )
