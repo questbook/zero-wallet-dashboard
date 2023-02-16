@@ -1,11 +1,22 @@
 import Projects from "@/components/screens/ViewProjects/Projects";
 import { Button, Flex, Text, Box } from "@chakra-ui/react";
 import { useRouter } from 'next/router'
+import { useContext } from "react";
+import { ProjectsContext } from "./_app";
 
 
 export default function ViewProject() {
-
+    const { projects } =
+        useContext(ProjectsContext)!;
     const router = useRouter()
+
+    if (projects === null){
+        return null
+    }
+
+    if (projects.length === 0) {
+        router.push('/')
+    }
 
     return (
         <Box
@@ -39,7 +50,7 @@ export default function ViewProject() {
                 </Button>
             </Flex>
             
-            <Projects />
+            <Projects projects={projects} />
             
         </Box>
     )

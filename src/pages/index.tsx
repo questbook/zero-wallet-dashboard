@@ -2,12 +2,24 @@ import Head from 'next/head'
 import { Text, Box, Card, Flex, Spacer, Button, Image } from '@chakra-ui/react'
 import TextFade from '@/components/UI/animations/TextFade'
 import { useRouter } from 'next/router'
+import { ProjectsContext } from './_app'
+import { useContext } from 'react'
 
 export default function Home() {
     const router = useRouter()
+    const { projects } =
+        useContext(ProjectsContext)!;
 
     const handleClick = () => {
         router.push('/createProject')
+    }
+
+    if (projects === null) {
+        return null;
+    }
+
+    if (projects.length !== 0) {
+        router.push('/viewProjects')
     }
 
     return (

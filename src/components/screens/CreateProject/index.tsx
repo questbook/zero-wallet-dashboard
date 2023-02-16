@@ -1,7 +1,7 @@
 import { DEFAULT_CHAIN, SupportedChainIds } from '@/constants/chains'
 import { Button, Card, Flex, Image, Text, useToast, Box } from '@chakra-ui/react'
 import { ethers } from 'ethers'
-import { Fragment, useState } from 'react'
+import { Fragment, useState, useContext } from 'react'
 import CreateProjectContractsInput from './CreateProjectContractsInput'
 import CreateProjectNameInput from './CreateProjectNameInput'
 import CreateProjectDomainInput from './CreateProjectDomainInput'
@@ -11,23 +11,16 @@ import useOwnerAndWebHookAttributes from '@/hooks/useOwnerAndWebHookAttributes'
 import { createNewProjectWithGasTanks } from '@/api'
 import { GasTankType } from '@/types'
 import ProjectGasTanksCreationModal from './Modals/ProjectGasTanksCreationModal'
-
-const mockGasTank: GasTankType = {
-    gas_tank_id: '0x123',
-    project_id: '1242-fdsdv-123',
-    created_at: '2021-09-01T00:00:00.000Z',
-    chain_id: '5',
-    provider_url: '',
-    funding_key: '1772',
-    whitelist: ['0x123', '0x456'],
-    balance: '0',
-}
+import { ProjectsContext } from '@/pages/_app';
 
 export default function CreateProject() {
+    const { projects } =
+        useContext(ProjectsContext)!;
+
     const ownerAndWebHookAttributes = useOwnerAndWebHookAttributes();
 
     // current step
-    const [step, setStep] = useState(2)
+    const [step, setStep] = useState(0)
 
     // step 1: name
     const [projectName, setProjectName] = useState<string>('')
@@ -46,7 +39,7 @@ export default function CreateProject() {
     const [isModalOpen, setIsModalOpen] = useState(true)
 
     // step 4: fill gas tanks
-    const [gasTanks, setGasTanks] = useState<GasTankType[]>([mockGasTank, mockGasTank])
+    const [gasTanks, setGasTanks] = useState<GasTankType[]>([])
 
     // ui
     const toast = useToast()
@@ -55,7 +48,10 @@ export default function CreateProject() {
         if (step === 0) {
             if (projectName === '') {
                 setProjectNameError('Project name is required')
-            } else {
+            } else if (projects?.find(elem => elem.name === projectName)) {
+                setProjectNameError('You already a have project with the same name')
+            }
+            else {
                 setProjectNameError('')
                 setStep(1)
             }
@@ -108,8 +104,8 @@ export default function CreateProject() {
                 }
             }
         }
-        else if (step === 3){
-            
+        else if (step === 3) {
+
         }
     }
 

@@ -1,52 +1,9 @@
 import CreateProjectComponent from '../components/screens/CreateProject'
-import { Flex, Spinner, Text } from '@chakra-ui/react'
-import { useAccount, useConnect, useSigner } from 'wagmi'
-import { ZeroWalletSigner } from 'zero-wallet-wagmi-connector'
-import { useContext, useEffect } from 'react'
-import { ProjectsContext } from './_app'
+import { Flex, Text } from '@chakra-ui/react'
+
+
 
 export default function CreateProject() {
-
-    const { data: signer } = useSigner<ZeroWalletSigner>()
-    const { connectAsync, connectors } = useConnect()
-    const { isConnected } = useAccount()
-    const { doesScwExist, setDoesScwExist } =
-        useContext(ProjectsContext)!;
-
-    useEffect(() => {
-        const func = async () => {
-            if (signer) {
-                try {
-                    await signer.authorize();
-                } catch { }
-                try {
-                    await signer.deployScw();
-                    setDoesScwExist(true)
-                } catch { }
-
-            }
-            else {
-                if (!isConnected)
-                    await connectAsync({ connector: connectors[0] })
-            }
-        };
-        func();
-    }, [signer, connectAsync, connectors, isConnected])
-
-    if (!doesScwExist) {
-        return (
-            <Flex
-                width={'100vw'}
-                h={'70vh'}
-                flexDirection={'column'}
-                justifyContent={'center'}
-                alignItems={'center'}
-            >
-                <Spinner size={'xl'} />
-            </Flex>
-        )
-    }
-
     return (
         <>
             <Flex ml={30} mr={30} flexDirection={'column'} gap={'96px'}>

@@ -3,69 +3,41 @@ import { updateProject } from "@/api";
 import EditProjectCard from "@/components/screens/EditProject/EditProjectCard";
 import { SupportedChainIds } from "@/constants/chains";
 import useOwnerAndWebHookAttributes from "@/hooks/useOwnerAndWebHookAttributes";
-import { GasTankType, IProject } from "@/types";
 import { isValidUrl } from "@/utils/checkers";
 import { Flex, Button, Box, Text, useToast } from "@chakra-ui/react";
 import { ethers } from "ethers";
 import { useRouter } from "next/router"
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { ProjectsContext } from "../_app";
+import { encode } from 'querystring'
 
-const mockGasTank1: GasTankType = {
-    gas_tank_id: '0x123',
-    project_id: '1242-fdsdv-123',
-    created_at: '2021-09-01T00:00:00.000Z',
-    chain_id: '5',
-    provider_url: '',
-    funding_key: '1772',
-    whitelist: ['0x123', '0x456'],
-    balance: '5',
-}
-
-const mockGasTank2: GasTankType = {
-    gas_tank_id: '0x124',
-    project_id: '1242-fdsdv-123',
-    created_at: '2021-09-01T00:00:00.000Z',
-    chain_id: '10',
-    provider_url: '',
-    funding_key: '1773',
-    whitelist: ['0x123', '0x456'],
-    balance: '0',
-}
-
-const project: IProject = {
-    project_id: '123213-adf',
-    project_api_key: 'a9877814-452b-48f1-8c4f-7c8468a87e05',
-    name: 'Questbook',
-    created_at: '2021-09-01T00:00:00.000Z',
-    owner_scw: '0x00',
-    allowed_origins: ['www.bla.com'],
-    gasTanks: [mockGasTank1, mockGasTank2],
-}
 
 export default function EditProject() {
-
+    const { projects } = useContext(ProjectsContext)!
     const router = useRouter()
-    const projectId = router.query;
+    const projectId = encode(router.query);
 
-    const addressesAndChain = project.gasTanks.map(gastank => {
+    const project = projects!.find(proj => proj.project_id === projectId)
+
+    const addressesAndChain = project?.gasTanks.map(gastank => {
         return gastank.whitelist.map(address => ({ address, chainId: gastank.chain_id }))
     }).flat();
-    const orgContracts = addressesAndChain.map(elem => elem.address)
-    const orgNetworks = addressesAndChain.map(elem => elem.chainId as unknown as SupportedChainIds)
+    const orgContracts = addressesAndChain?.map(elem => elem.address)
+    const orgNetworks = addressesAndChain?.map(elem => elem.chainId as unknown as SupportedChainIds)
 
     const ownerAndWebHookAttributes = useOwnerAndWebHookAttributes();
 
-    const [nameUpdated, setNameUpdated] = useState(project.name)
+    const [nameUpdated, setNameUpdated] = useState(project?.name || '')
     const [projectNameError, setProjectNameError] = useState<string>('')
 
 
-    const [contracts, setContracts] = useState<Array<string>>(orgContracts)
+    const [contracts, setContracts] = useState<Array<string>>(orgContracts || [])
     const [contractsNetworks, setContractsNetworks] = useState<
         Array<SupportedChainIds>
-    >(orgNetworks)
+    >(orgNetworks || [])
     const [contractsError, setContractsError] = useState<string>('')
 
-    const [domains, setDomains] = useState([...project.allowed_origins])
+    const [domains, setDomains] = useState([...(project?.allowed_origins || [])])
     const [domainsError, setDomainsError] = useState<string>('')
 
     const toast = useToast()
@@ -116,6 +88,7 @@ export default function EditProject() {
     }
 
     const handleSave = () => {
+        if (!project) return;
         const isValid = isValidName() && isValidContracts() && isValidDomains()
         if (!isValid) return;
 
@@ -146,6 +119,10 @@ export default function EditProject() {
         })
     }
 
+    if (!project) {
+        return 'Not Found'
+    }
+
     return (
         <Box
             p='5'
@@ -164,14 +141,11 @@ export default function EditProject() {
                 <Button
                     variant='primary2'
                     ml='auto'
-                    onClick={() => {
-                        router.push('/createProject')
-                    }}
+                    onClick={handleSave}
                 >
                     <Text
                         variant={'heading3Bold'}
                         color={'inherit'}
-                        onClick={handleSave}
                     >
                         Save
                     </Text>

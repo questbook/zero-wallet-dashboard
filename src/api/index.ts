@@ -1,5 +1,5 @@
 import { SupportedChainIds } from '@/constants/chains'
-import { GasTankType, IBase, IProject, NewGasTank, NewProject } from '@/types'
+import { GasTankType, IBase, IGasTank, IProject, NewGasTank, NewProject, ProjectApiType } from '@/types'
 import axios from 'axios'
 import { backendUrl } from './constants'
 import { isEqual, difference } from 'lodash'
@@ -255,11 +255,14 @@ export async function updateProjectNameAndDomains(
         return
     if (!ownerAndWebHookAttributes) return
 
-    await axios.post(`${backendUrl}/api/dashboard/project/${orgProject.project_id}`, {
-        name: newName,
-        allowedOrigins: newDomains,
-        ...ownerAndWebHookAttributes,
-    })
+    await axios.post(
+        `${backendUrl}/api/dashboard/project/${orgProject.project_id}`,
+        {
+            name: newName,
+            allowedOrigins: newDomains,
+            ...ownerAndWebHookAttributes,
+        }
+    )
 }
 
 export async function updateProject(
@@ -286,4 +289,46 @@ export async function updateProject(
     ]
 
     await Promise.all(promises)
+}
+
+
+export async function postFetcher<T>(args: [string, unknown]): Promise<T | null> {
+    const [input, requestData] = args;
+    if (!requestData) return null;
+    const { data } = await axios.post(input, requestData);
+    if (data.error || data.errors) {
+        return null;
+    }
+
+    return data;
+}
+
+
+export async function getProjects(
+    ownerAndWebHookAttributes: IBase
+): Promise<IProject[]> {
+    const getRawProjectsUrl = `${backendUrl}/api/dashboard/projects`
+    const projects = await postFetcher<ProjectApiType[]>([
+        getRawProjectsUrl,
+        ownerAndWebHookAttributes,
+    ])
+    if (projects === null) {
+        throw new Error('No projects found')
+    }
+
+    const projectWithGasTanks = await Promise.all(
+        projects.map(async (project) => {
+            const getGasTanksUrl = `${backendUrl}/api/dashboard/project/${project.project_id}/gasTanks`
+            const gasTanks = await postFetcher<IGasTank[]>([
+                getGasTanksUrl,
+                ownerAndWebHookAttributes,
+            ])
+            if (gasTanks === null)
+                throw new Error(
+                    `No gas tanks found for project ${project.name}`
+                )
+            return { ...project, gasTanks }
+        })
+    )
+    return projectWithGasTanks
 }

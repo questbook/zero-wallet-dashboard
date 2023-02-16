@@ -42,14 +42,14 @@ const client = createClient({
 export const ProjectsContext = createContext<{
     doesScwExist: boolean
     setDoesScwExist: (newState: boolean) => void
-    projects: IProject[]
+    projects: IProject[] | null
     setProjects: (projects: IProject[]) => void
     selectedEntity: EntityType | null
     setSelectedEntity: (entry: EntityType | null) => void
 } | null>(null)
 
 export default function App({ Component, pageProps }: AppProps) {
-    const [projects, setProjects] = useState<IProject[]>([])
+    const [projects, setProjects] = useState<IProject[] | null>(null)
     const [selectedEntity, setSelectedEntity] = useState<EntityType | null>(
         null
     )
