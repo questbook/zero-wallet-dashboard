@@ -30,7 +30,7 @@ export default function DomainInput({ index, domains, setDomains }: Props) {
                 <Image
                     display={{ lg: 'inherit' }}
                     src="/assets/Warning.svg"
-                    alt="ZeroWallet"
+                    alt="Warning"
                     cursor="pointer"
                     key={2}
                 />,
