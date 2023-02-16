@@ -29,16 +29,14 @@ export default function ContractModifier({
     ) as (keyof typeof SupportedChainIds)[]
 
     useEffect(() => {
-        if (contractsNetworks[index]) {
-            setContractState(0)
-        } else if (contracts[index]) {
+        if (contracts[index]) {
             if (!ethers.utils.isAddress(contracts[index])) {
                 setContractState(1)
             } else {
                 setContractState(0)
             }
         }
-    }, [index, contracts, contractState, contractsNetworks])
+    }, [index, contracts, contractsNetworks])
 
     const searchStateMap = useMemo(() => {
         return [
@@ -55,6 +53,8 @@ export default function ContractModifier({
             ],
         ]
     }, [])
+
+    console.log(contractState)
 
     return (
         <Flex
