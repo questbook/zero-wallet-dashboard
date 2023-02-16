@@ -1,9 +1,12 @@
 
+import { updateProject } from "@/api";
 import EditProjectCard from "@/components/screens/EditProject/EditProjectCard";
 import { SupportedChainIds } from "@/constants/chains";
 import useOwnerAndWebHookAttributes from "@/hooks/useOwnerAndWebHookAttributes";
 import { GasTankType, IProject } from "@/types";
-import { Flex, Button, Box, Text } from "@chakra-ui/react";
+import { isValidUrl } from "@/utils/checkers";
+import { Flex, Button, Box, Text, useToast } from "@chakra-ui/react";
+import { ethers } from "ethers";
 import { useRouter } from "next/router"
 import { useState } from "react";
 
@@ -53,6 +56,7 @@ export default function EditProject() {
     const ownerAndWebHookAttributes = useOwnerAndWebHookAttributes();
 
     const [nameUpdated, setNameUpdated] = useState(project.name)
+    const [projectNameError, setProjectNameError] = useState<string>('')
 
 
     const [contracts, setContracts] = useState<Array<string>>(orgContracts)
@@ -64,8 +68,82 @@ export default function EditProject() {
     const [domains, setDomains] = useState([...project.allowed_origins])
     const [domainsError, setDomainsError] = useState<string>('')
 
+    const toast = useToast()
+
+    const isValidName = () => {
+        if (nameUpdated === '') {
+            setProjectNameError('Project name is required')
+            return false
+        } else {
+            setProjectNameError('')
+            return true
+        }
+    }
+
+    const isValidContracts = () => {
+        let error = false
+        contracts.forEach((contract: string) => {
+            if (!ethers.utils.isAddress(contract)) {
+                setContractsError(
+                    'Invalid contracts / At least one valid contract is required.'
+                )
+                error = true
+            }
+        })
+
+        if (contractsNetworks.length === 0 || error) {
+            setContractsError(
+                'Invalid contracts / At least one valid contract is required.'
+            )
+            error = false
+            return false
+        } else {
+            setContractsError('')
+            return true;
+        }
+    }
+
+    const isValidDomains = () => {
+        const error = domains.some((domain) => !isValidUrl(domain))
+        if (error) {
+            setDomainsError(
+                'Invalid domains / At least one valid domain is required.'
+            )
+        } else {
+            setDomainsError('')
+            return true;
+        }
+    }
+
     const handleSave = () => {
-        
+        const isValid = isValidName() && isValidContracts() && isValidDomains()
+        if (!isValid) return;
+
+        if (!ownerAndWebHookAttributes) {
+            toast({
+                title: 'Error',
+                description: 'Please connect your wallet.',
+                status: 'error',
+                isClosable: true,
+            })
+            return
+        }
+
+        updateProject(
+            ownerAndWebHookAttributes,
+            project,
+            nameUpdated,
+            contracts,
+            contractsNetworks,
+            domains
+        ).then(() => {
+            toast({
+                title: 'Success',
+                description: 'Your changes are saved now.',
+                status: 'success',
+                isClosable: true,
+            })
+        })
     }
 
     return (
@@ -93,7 +171,7 @@ export default function EditProject() {
                     <Text
                         variant={'heading3Bold'}
                         color={'inherit'}
-
+                        onClick={handleSave}
                     >
                         Save
                     </Text>
@@ -102,6 +180,7 @@ export default function EditProject() {
             <EditProjectCard
                 nameUpdated={nameUpdated}
                 setNameUpdated={(newVal) => setNameUpdated(newVal)}
+                nameUpdatedError={projectNameError}
 
                 contracts={contracts}
                 setContracts={(newVal) => setContracts(newVal)}
