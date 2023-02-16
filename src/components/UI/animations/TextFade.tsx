@@ -1,5 +1,11 @@
 import { motion, isValidMotionProp, AnimatePresence } from 'framer-motion'
-import { Box, chakra, shouldForwardProp, Text, TextProps } from '@chakra-ui/react'
+import {
+    Box,
+    chakra,
+    shouldForwardProp,
+    Text,
+    TextProps,
+} from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 
 type Props = TextProps & {
@@ -59,8 +65,8 @@ export default function TextFade({
     }, [cooldownTime, textListLength])
 
     return (
-        <Box overflow={'hidden'} p='1'>
-            <AnimatePresence mode='popLayout' initial={false}>
+        <Box overflow={'hidden'} p="1">
+            <AnimatePresence mode="popLayout" initial={false}>
                 <ChakraBox
                     variants={variants}
                     initial={'enter'}

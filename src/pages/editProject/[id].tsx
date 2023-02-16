@@ -1,43 +1,51 @@
-
-import { updateProject } from "@/api";
-import EditProjectCard from "@/components/screens/EditProject/EditProjectCard";
-import { SupportedChainIds } from "@/constants/chains";
-import useOwnerAndWebHookAttributes from "@/hooks/useOwnerAndWebHookAttributes";
-import { isValidUrl } from "@/utils/checkers";
-import { Flex, Button, Box, Text, useToast } from "@chakra-ui/react";
-import { ethers } from "ethers";
-import { useRouter } from "next/router"
-import { useContext, useState } from "react";
-import { ProjectsContext } from "../_app";
+import { updateProject } from '@/api'
+import EditProjectCard from '@/components/screens/EditProject/EditProjectCard'
+import { SupportedChainIds } from '@/constants/chains'
+import useOwnerAndWebHookAttributes from '@/hooks/useOwnerAndWebHookAttributes'
+import { isValidUrl } from '@/utils/checkers'
+import { Flex, Button, Box, Text, useToast } from '@chakra-ui/react'
+import { ethers } from 'ethers'
+import { useRouter } from 'next/router'
+import { useContext, useState } from 'react'
+import { ProjectsContext } from '../_app'
 import { encode } from 'querystring'
-
 
 export default function EditProject() {
     const { projects } = useContext(ProjectsContext)!
     const router = useRouter()
-    const projectId = encode(router.query);
+    const projectId = encode(router.query)
 
-    const project = projects!.find(proj => proj.project_id === projectId)
+    const project = projects!.find((proj) => proj.project_id === projectId)
 
-    const addressesAndChain = project?.gasTanks.map(gastank => {
-        return gastank.whitelist.map(address => ({ address, chainId: gastank.chain_id }))
-    }).flat();
-    const orgContracts = addressesAndChain?.map(elem => elem.address)
-    const orgNetworks = addressesAndChain?.map(elem => elem.chainId as unknown as SupportedChainIds)
+    const addressesAndChain = project?.gasTanks
+        .map((gastank) => {
+            return gastank.whitelist.map((address) => ({
+                address,
+                chainId: gastank.chain_id,
+            }))
+        })
+        .flat()
+    const orgContracts = addressesAndChain?.map((elem) => elem.address)
+    const orgNetworks = addressesAndChain?.map(
+        (elem) => elem.chainId as unknown as SupportedChainIds
+    )
 
-    const ownerAndWebHookAttributes = useOwnerAndWebHookAttributes();
+    const ownerAndWebHookAttributes = useOwnerAndWebHookAttributes()
 
     const [nameUpdated, setNameUpdated] = useState(project?.name || '')
     const [projectNameError, setProjectNameError] = useState<string>('')
 
-
-    const [contracts, setContracts] = useState<Array<string>>(orgContracts || [])
+    const [contracts, setContracts] = useState<Array<string>>(
+        orgContracts || []
+    )
     const [contractsNetworks, setContractsNetworks] = useState<
         Array<SupportedChainIds>
     >(orgNetworks || [])
     const [contractsError, setContractsError] = useState<string>('')
 
-    const [domains, setDomains] = useState([...(project?.allowed_origins || [])])
+    const [domains, setDomains] = useState([
+        ...(project?.allowed_origins || []),
+    ])
     const [domainsError, setDomainsError] = useState<string>('')
 
     const toast = useToast()
@@ -71,7 +79,7 @@ export default function EditProject() {
             return false
         } else {
             setContractsError('')
-            return true;
+            return true
         }
     }
 
@@ -83,14 +91,14 @@ export default function EditProject() {
             )
         } else {
             setDomainsError('')
-            return true;
+            return true
         }
     }
 
     const handleSave = () => {
-        if (!project) return;
+        if (!project) return
         const isValid = isValidName() && isValidContracts() && isValidDomains()
-        if (!isValid) return;
+        if (!isValid) return
 
         if (!ownerAndWebHookAttributes) {
             toast({
@@ -124,29 +132,13 @@ export default function EditProject() {
     }
 
     return (
-        <Box
-            p='5'
-        >
-            <Flex
-                mb='50'
-                alignItems={'center'}
-                justifyContent='center'
-            >
-                <Text
-                    variant='heading1Bold'
-                    lineHeight='100%'
-                >
+        <Box p="5">
+            <Flex mb="50" alignItems={'center'} justifyContent="center">
+                <Text variant="heading1Bold" lineHeight="100%">
                     Edit Dapp
                 </Text>
-                <Button
-                    variant='primary2'
-                    ml='auto'
-                    onClick={handleSave}
-                >
-                    <Text
-                        variant={'heading3Bold'}
-                        color={'inherit'}
-                    >
+                <Button variant="primary2" ml="auto" onClick={handleSave}>
+                    <Text variant={'heading3Bold'} color={'inherit'}>
                         Save
                     </Text>
                 </Button>
@@ -155,16 +147,15 @@ export default function EditProject() {
                 nameUpdated={nameUpdated}
                 setNameUpdated={(newVal) => setNameUpdated(newVal)}
                 nameUpdatedError={projectNameError}
-
                 contracts={contracts}
                 setContracts={(newVal) => setContracts(newVal)}
                 contractsNetworks={contractsNetworks}
                 setContractsNetworks={(newVal) => setContractsNetworks(newVal)}
                 contractsError={contractsError}
-
                 domains={domains}
                 setDomains={(newValue) => setDomains(newValue)}
-                domainsError={domainsError} />
+                domainsError={domainsError}
+            />
         </Box>
     )
 }

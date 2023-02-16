@@ -1,5 +1,13 @@
 import { DEFAULT_CHAIN, SupportedChainIds } from '@/constants/chains'
-import { Button, Card, Flex, Image, Text, useToast, Box } from '@chakra-ui/react'
+import {
+    Button,
+    Card,
+    Flex,
+    Image,
+    Text,
+    useToast,
+    Box,
+} from '@chakra-ui/react'
 import { ethers } from 'ethers'
 import { Fragment, useState, useContext } from 'react'
 import CreateProjectContractsInput from './CreateProjectContractsInput'
@@ -11,13 +19,12 @@ import useOwnerAndWebHookAttributes from '@/hooks/useOwnerAndWebHookAttributes'
 import { createNewProjectWithGasTanks } from '@/api'
 import { GasTankType } from '@/types'
 import ProjectGasTanksCreationModal from './Modals/ProjectGasTanksCreationModal'
-import { ProjectsContext } from '@/pages/_app';
+import { ProjectsContext } from '@/pages/_app'
 
 export default function CreateProject() {
-    const { projects } =
-        useContext(ProjectsContext)!;
+    const { projects } = useContext(ProjectsContext)!
 
-    const ownerAndWebHookAttributes = useOwnerAndWebHookAttributes();
+    const ownerAndWebHookAttributes = useOwnerAndWebHookAttributes()
 
     // current step
     const [step, setStep] = useState(0)
@@ -48,10 +55,11 @@ export default function CreateProject() {
         if (step === 0) {
             if (projectName === '') {
                 setProjectNameError('Project name is required')
-            } else if (projects?.find(elem => elem.name === projectName)) {
-                setProjectNameError('You already a have project with the same name')
-            }
-            else {
+            } else if (projects?.find((elem) => elem.name === projectName)) {
+                setProjectNameError(
+                    'You already a have project with the same name'
+                )
+            } else {
                 setProjectNameError('')
                 setStep(1)
             }
@@ -92,20 +100,22 @@ export default function CreateProject() {
                         status: 'error',
                         isClosable: true,
                     })
-                }
-                else {
+                } else {
                     setIsModalOpen(true)
-                    createNewProjectWithGasTanks(ownerAndWebHookAttributes, projectName, contracts, contractsNetworks, domains)
-                        .then((res) => {
-                            setGasTanks(res.gasTanks)
-                            setIsModalOpen(false)
-                            setStep(3)
-                        })
+                    createNewProjectWithGasTanks(
+                        ownerAndWebHookAttributes,
+                        projectName,
+                        contracts,
+                        contractsNetworks,
+                        domains
+                    ).then((res) => {
+                        setGasTanks(res.gasTanks)
+                        setIsModalOpen(false)
+                        setStep(3)
+                    })
                 }
             }
-        }
-        else if (step === 3) {
-
+        } else if (step === 3) {
         }
     }
 
@@ -142,10 +152,7 @@ export default function CreateProject() {
             setDomains={(newValue) => setDomains(newValue)}
             domainsError={domainsError}
         />,
-        <FillGasTanks
-            key={'child-4'}
-            gasTanks={gasTanks}
-        />,
+        <FillGasTanks key={'child-4'} gasTanks={gasTanks} />,
     ]
 
     return (
@@ -160,8 +167,8 @@ export default function CreateProject() {
                 display="flex"
             >
                 <Flex flexDirection={'column'} w="100%" px="5">
-                    {
-                        step <= 2 && <Text
+                    {step <= 2 && (
+                        <Text
                             fontSize={'64px'}
                             fontWeight={'700'}
                             lineHeight={'72px'}
@@ -169,7 +176,7 @@ export default function CreateProject() {
                         >
                             Connect your Dapp
                         </Text>
-                    }
+                    )}
 
                     {steps[step]}
                     <Flex
@@ -182,20 +189,20 @@ export default function CreateProject() {
                             <Button
                                 backgroundColor={'#E0DCD5'}
                                 borderRadius={'27px'}
-                                py='10px'
-                                pr='32px'
-                                pl='15px'
-                                color='black.2'
+                                py="10px"
+                                pr="32px"
+                                pl="15px"
+                                color="black.2"
                                 onClick={prevClick}
-                                display='flex'
+                                display="flex"
                                 alignItems={'center'}
-                                justifyContent='center'
+                                justifyContent="center"
                                 gap={3}
                             >
                                 <Image
-                                    src='/assets/ArrowLeft.svg'
-                                    alt=''
-                                    h='80%'
+                                    src="/assets/ArrowLeft.svg"
+                                    alt=""
+                                    h="80%"
                                 />
                                 <Box>
                                     <Text
@@ -205,29 +212,23 @@ export default function CreateProject() {
                                         Back
                                     </Text>
                                 </Box>
-
-
                             </Button>
                         )}
                         <Button
                             backgroundColor={'#EC5D2A'}
                             borderRadius={'27px'}
                             onClick={nextClick}
-                            color='white'
+                            color="white"
                             // p='10 32'
-                            py='10px'
-                            px='32px'
+                            py="10px"
+                            px="32px"
                             ml={'auto'}
                         >
-                            <Text
-                                variant={'heading3Bold'}
-                                color={'inherit'}
-                            >
-                                {
-                                    step === 3 ? "Add zero to your Dapp" : "Continue"
-                                }
+                            <Text variant={'heading3Bold'} color={'inherit'}>
+                                {step === 3
+                                    ? 'Add zero to your Dapp'
+                                    : 'Continue'}
                             </Text>
-
                         </Button>
                     </Flex>
                 </Flex>

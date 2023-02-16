@@ -1,5 +1,13 @@
 import { SupportedChainIds } from '@/constants/chains'
-import { GasTankType, IBase, IGasTank, IProject, NewGasTank, NewProject, ProjectApiType } from '@/types'
+import {
+    GasTankType,
+    IBase,
+    IGasTank,
+    IProject,
+    NewGasTank,
+    NewProject,
+    ProjectApiType,
+} from '@/types'
 import axios from 'axios'
 import { backendUrl } from './constants'
 import { isEqual, difference } from 'lodash'
@@ -291,18 +299,18 @@ export async function updateProject(
     await Promise.all(promises)
 }
 
-
-export async function postFetcher<T>(args: [string, unknown]): Promise<T | null> {
-    const [input, requestData] = args;
-    if (!requestData) return null;
-    const { data } = await axios.post(input, requestData);
+export async function postFetcher<T>(
+    args: [string, unknown]
+): Promise<T | null> {
+    const [input, requestData] = args
+    if (!requestData) return null
+    const { data } = await axios.post(input, requestData)
     if (data.error || data.errors) {
-        return null;
+        return null
     }
 
-    return data;
+    return data
 }
-
 
 export async function getProjects(
     ownerAndWebHookAttributes: IBase

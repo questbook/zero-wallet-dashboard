@@ -1,7 +1,6 @@
 import { SupportedChainIds } from '@/constants/chains'
 import contractAbi from './abi.json'
 
-
 const ADDRESS_BY_CHAIN_ID: {
     [key in SupportedChainIds]: string
 } = {

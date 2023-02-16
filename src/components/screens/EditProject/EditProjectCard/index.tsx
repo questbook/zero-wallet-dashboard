@@ -1,15 +1,14 @@
-import TextField from "@/components/UI/TextField/TextField";
-import { DEFAULT_CHAIN, SupportedChainIds } from "@/constants/chains";
-import { Card, Text, Box, Button, Divider } from "@chakra-ui/react";
-import { Fragment } from "react";
-import ContractModifier from "./ContractModifier";
-import DomainModifier from "./DomainModifier";
-
+import TextField from '@/components/UI/TextField/TextField'
+import { DEFAULT_CHAIN, SupportedChainIds } from '@/constants/chains'
+import { Card, Text, Box, Button, Divider } from '@chakra-ui/react'
+import { Fragment } from 'react'
+import ContractModifier from './ContractModifier'
+import DomainModifier from './DomainModifier'
 
 interface Props {
-    nameUpdated: string,
-    setNameUpdated: (newValue: string) => void,
-    nameUpdatedError: string,
+    nameUpdated: string
+    setNameUpdated: (newValue: string) => void
+    nameUpdatedError: string
 
     setContracts: (newContracts: Array<string>) => void
     contracts: Array<string>
@@ -39,15 +38,8 @@ export default function EditProjectCard({
     domains,
     domainsError,
 }: Props) {
-
-
     return (
-        <Card
-            borderRadius='24px'
-            backgroundColor='white'
-            p='10'
-            my='50'
-        >
+        <Card borderRadius="24px" backgroundColor="white" p="10" my="50">
             <TextField
                 label={'Dapp Name'}
                 placeholder={'Axie Infinity'}
@@ -62,22 +54,15 @@ export default function EditProjectCard({
             <br />
             <br />
 
-            <Box
-                mb='10'
-            >
-                <Text
-                    variant={'Body1Bold'}
-                    color='black.2'
-                >
+            <Box mb="10">
+                <Text variant={'Body1Bold'} color="black.2">
                     DAPP CONTRACT ADDRESS
                 </Text>
 
                 {contracts.length > 0 &&
                     contracts.map((_: string, index: number) => {
                         return (
-                            <Fragment
-                                key={'contract-fragment-' + index}
-                            >
+                            <Fragment key={'contract-fragment-' + index}>
                                 <ContractModifier
                                     index={index}
                                     contracts={contracts}
@@ -87,10 +72,7 @@ export default function EditProjectCard({
                                 />
 
                                 {index !== contracts.length - 1 && (
-                                    <Divider
-                                        m={5}
-                                        w='100%'
-                                    />
+                                    <Divider m={5} w="100%" />
                                 )}
                             </Fragment>
                         )
@@ -101,23 +83,20 @@ export default function EditProjectCard({
                     variant={'secondary2'}
                     onClick={() => {
                         setContracts([...contracts, ''])
-                        setContractsNetworks([...contractsNetworks, DEFAULT_CHAIN])
+                        setContractsNetworks([
+                            ...contractsNetworks,
+                            DEFAULT_CHAIN,
+                        ])
                     }}
                 >
-                    <Text
-                        variant={'heading3Bold'}
-                        color='inherit'
-                    >
+                    <Text variant={'heading3Bold'} color="inherit">
                         Add another contract
                     </Text>
                 </Button>
             </Box>
 
             <Box>
-                <Text
-                    variant={'Body1Bold'}
-                    color='black.2'
-                >
+                <Text variant={'Body1Bold'} color="black.2">
                     DOMAINS FOR YOUR DAPP
                 </Text>
 
@@ -133,10 +112,7 @@ export default function EditProjectCard({
                                 />
 
                                 {index !== domains.length - 1 && (
-                                    <Divider
-                                        m={5}
-                                        w='100%'
-                                    />
+                                    <Divider m={5} w="100%" />
                                 )}
                             </Fragment>
                         )
@@ -149,10 +125,7 @@ export default function EditProjectCard({
                         setDomains([...domains, ''])
                     }}
                 >
-                    <Text
-                        variant={'heading3Bold'}
-                        color='inherit'
-                    >
+                    <Text variant={'heading3Bold'} color="inherit">
                         Add another domain
                     </Text>
                 </Button>

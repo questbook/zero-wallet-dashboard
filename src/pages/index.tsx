@@ -7,15 +7,14 @@ import { useContext } from 'react'
 
 export default function Home() {
     const router = useRouter()
-    const { projects } =
-        useContext(ProjectsContext)!;
+    const { projects } = useContext(ProjectsContext)!
 
     const handleClick = () => {
         router.push('/createProject')
     }
 
     if (projects === null) {
-        return null;
+        return null
     }
 
     if (projects.length !== 0) {
@@ -86,7 +85,12 @@ export default function Home() {
                     </Flex>
                 </Card>
 
-                <Card h="600px" my="10" borderRadius={'24px'} backgroundColor='#FFFFFF'>
+                <Card
+                    h="600px"
+                    my="10"
+                    borderRadius={'24px'}
+                    backgroundColor="#FFFFFF"
+                >
                     <Flex h="100%">
                         <Box w="50%" py={'10'} px={12} h="100%">
                             <Text

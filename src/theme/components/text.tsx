@@ -43,11 +43,11 @@ export default {
                 lineHeight: '32px',
             },
             code: {
-                fontFamily:'mono',
+                fontFamily: 'mono',
                 fontWeight: '500',
                 fontSize: '18px',
                 lineHeight: '32px',
-            }
+            },
         },
     },
 }

@@ -65,16 +65,14 @@ export default function ContractModifier({
         >
             <Flex flexDirection={'row'} gap={10}>
                 <Flex flexDirection={'column'}>
-                    <Flex
-                        justifyContent={'center'}
-                        alignItems='center'
-                        gap={0}
-                    >
+                    <Flex justifyContent={'center'} alignItems="center" gap={0}>
                         <Dropdown
-                            backgroundColor='white'
-                            borderRightRadius='0'
+                            backgroundColor="white"
+                            borderRightRadius="0"
                             handleChange={(newElem) => {
-                                const newContractsNetworks = [...contractsNetworks]
+                                const newContractsNetworks = [
+                                    ...contractsNetworks,
+                                ]
                                 newContractsNetworks[index] = newElem.value
                                 setContractsNetworks(newContractsNetworks)
                             }}
@@ -103,7 +101,7 @@ export default function ContractModifier({
                             fontSize={'24px'}
                             fontWeight={'700'}
                             width={'720px'}
-                            h='100%'
+                            h="100%"
                             onChange={(e) => {
                                 const newContracts = [...contracts]
                                 newContracts[index] = e.target.value
@@ -111,7 +109,6 @@ export default function ContractModifier({
                             }}
                         />
                     </Flex>
-
 
                     {contracts[index] && (
                         <Flex flexDirection={'row'} width={'100%'} gap={'10px'}>
@@ -130,7 +127,6 @@ export default function ContractModifier({
                     >
                         NETWORK ON WHICH CONTRACT IS DEPLOYED
                     </Text> */}
-
                 </Flex>
             </Flex>
             {contracts.length > 1 && (
@@ -140,7 +136,6 @@ export default function ContractModifier({
                     icon={<CloseIcon />}
                     aria-label={''}
                     mt={3}
-
                     border={'1px solid #E0DCD5'}
                     borderRadius={'8px'}
                     onClick={() => {

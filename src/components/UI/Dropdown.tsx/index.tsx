@@ -32,15 +32,11 @@ const defaultProps = {
     handleChange: null,
     defaultIndex: 0,
     addERC: false,
-    
 }
 
 function SingleElement({ listItem }: { listItem: ListItem }) {
     return (
-        <Flex
-            p={2}
-            gap={3}
-        >
+        <Flex p={2} gap={3}>
             {listItem.iconPath && (
                 <Image
                     src={listItem.iconPath}
@@ -55,7 +51,13 @@ function SingleElement({ listItem }: { listItem: ListItem }) {
     )
 }
 
-function Dropdown({ listItems, handleChange, selectedItem, backgroundColor, borderRightRadius }: DropdownProps) {
+function Dropdown({
+    listItems,
+    handleChange,
+    selectedItem,
+    backgroundColor,
+    borderRightRadius,
+}: DropdownProps) {
     const [isOpen, setIsOpen] = React.useState(false)
 
     return (
@@ -65,7 +67,7 @@ function Dropdown({ listItems, handleChange, selectedItem, backgroundColor, bord
                 as={Button}
                 px={4}
                 py={2}
-                w='220px'
+                w="220px"
                 transition="all 0.2s"
                 borderRadius="md"
                 borderRightRadius={borderRightRadius}

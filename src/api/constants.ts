@@ -1,2 +1,1 @@
-
-export const backendUrl = process.env.NEXT_PUBLIC_BACKEND_DOMAIN!;
+export const backendUrl = process.env.NEXT_PUBLIC_BACKEND_DOMAIN!

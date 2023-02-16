@@ -25,9 +25,7 @@ export default function CreateProjectContractsInput({
             {contracts.length > 0 &&
                 contracts.map((_: string, index: number) => {
                     return (
-                        <React.Fragment
-                            key={'contract-fragment-' + index}
-                        >
+                        <React.Fragment key={'contract-fragment-' + index}>
                             <ContractInput
                                 key={'contract-' + index}
                                 index={index}

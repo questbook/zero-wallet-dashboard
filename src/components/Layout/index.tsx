@@ -17,43 +17,42 @@ export const ProjectUpdater = createContext<{
 } | null>(null)
 
 export default function Layout({ children }: DashboardLayoutProps) {
-
     const { setProjects, doesScwExist, setDoesScwExist, projects } =
-        useContext(ProjectsContext)!;
-    const ownerAndWebHookAttributes = useOwnerAndWebHookAttributes();
-    const { data: signer } = useSigner<ZeroWalletSigner>();
-    const { connect, connectors } = useConnect();
+        useContext(ProjectsContext)!
+    const ownerAndWebHookAttributes = useOwnerAndWebHookAttributes()
+    const { data: signer } = useSigner<ZeroWalletSigner>()
+    const { connect, connectors } = useConnect()
 
     useEffect(() => {
         const func = async () => {
             if (signer && !doesScwExist) {
                 try {
                     try {
-                        await signer.authorize();
-                    } catch { }
+                        await signer.authorize()
+                    } catch {}
 
-                    await signer.deployScw();
-                    setDoesScwExist(true);
-                } catch { }
+                    await signer.deployScw()
+                    setDoesScwExist(true)
+                } catch {}
             }
-        };
+        }
 
-        func();
-    }, [signer, doesScwExist, setDoesScwExist]);
+        func()
+    }, [signer, doesScwExist, setDoesScwExist])
 
     const updateProjects = useCallback(async () => {
         if (signer && doesScwExist && ownerAndWebHookAttributes?.ownerScw) {
-            const projects = await getProjects(ownerAndWebHookAttributes);
-            setProjects(projects);
+            const projects = await getProjects(ownerAndWebHookAttributes)
+            setProjects(projects)
         }
-    }, [doesScwExist, ownerAndWebHookAttributes, setProjects, signer]);
+    }, [doesScwExist, ownerAndWebHookAttributes, setProjects, signer])
 
     useEffect(() => {
-        updateProjects();
-    }, [doesScwExist, ownerAndWebHookAttributes, updateProjects]);
+        updateProjects()
+    }, [doesScwExist, ownerAndWebHookAttributes, updateProjects])
 
     useEffect(() => {
-        connect({ connector: connectors[0] });
+        connect({ connector: connectors[0] })
     }, [connect, connectors])
 
     return (
@@ -71,7 +70,9 @@ export default function Layout({ children }: DashboardLayoutProps) {
                         >
                             <Spinner size={'xl'} />
                         </Flex>
-                    ) : children}
+                    ) : (
+                        children
+                    )}
                 </main>
             </ProjectUpdater.Provider>
             <Spacer />

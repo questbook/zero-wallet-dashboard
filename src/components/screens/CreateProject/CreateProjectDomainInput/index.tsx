@@ -13,7 +13,6 @@ export default function CreateProjectDomainInput({
     domains,
     domainsError,
 }: Props) {
-
     return (
         <Flex flexDirection={'column'}>
             {domains.length > 0 &&
