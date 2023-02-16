@@ -24,6 +24,7 @@ interface Props extends FlexProps {
     isVerified?: boolean
     isDisabled?: boolean
     type?: string
+    borderLeftRadius?: string
 }
 
 function TextField({
@@ -39,6 +40,7 @@ function TextField({
     isDisabled,
     errorText,
     type,
+    borderLeftRadius,
     ...props
 }: Props) {
     const [, setCurrentLength] = React.useState(value?.toString().length)
@@ -92,6 +94,7 @@ function TextField({
                     isDisabled={isDisabled}
                     onWheel={(e) => (e.target as HTMLElement).blur()}
                     type={type || 'text'}
+                    borderLeftRadius={borderLeftRadius}
                 />
                 {optionalText && (
                     <Text ml={1} variant="v2_metadata" color="black.3">
