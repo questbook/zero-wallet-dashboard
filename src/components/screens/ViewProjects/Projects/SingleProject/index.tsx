@@ -1,6 +1,6 @@
 import CopyableText from '@/components/UI/CopyableText'
 import { IProject } from '@/types'
-import { Card, Text, Flex, Button, Image, Box, Divider } from '@chakra-ui/react'
+import { Card, Text, Flex, Button, Image, Box, Divider, useClipboard } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { Fragment } from 'react'
 import SingleGasTankFiller from './SingleGasTankFiller'
@@ -9,9 +9,21 @@ interface Props {
     project: IProject
 }
 
+
 export default function SingleProject({ project }: Props) {
 
     const router = useRouter()
+    const code = `\
+const zeroWalletConnectorOptions: 
+    ZeroWalletConnectorOptions = {
+    zeroWalletProjectApiKey: <YOUR-API-KEY>,
+}
+const connector = new ZeroWalletConnector({
+    chains: <CHAINS-LIST>,
+    options: zeroWalletConnectorOptions,
+}) \
+    `
+    const { onCopy } = useClipboard(code)
 
     return (
         <Card borderRadius="24px" backgroundColor="white" p="10" my="50">
@@ -59,8 +71,8 @@ export default function SingleProject({ project }: Props) {
                     // py='20'
                     color="white"
                 >
-                    <Text color={'inherit'} variant="code">
-                        const zeroWalletConnectorOptions: ZeroWalletConnectorOptions = {'{'} <br />
+                    <Text color={'inherit'} variant="code" wordBreak={'break-word'} overflow='auto' p='2'>
+                        {/* const zeroWalletConnectorOptions: ZeroWalletConnectorOptions = {'{'} <br />
                         &emsp; zeroWalletProjectApiKey: {'<'}YourPrivateKey{'>'}
                         <br />
                         {'}'}
@@ -68,14 +80,16 @@ export default function SingleProject({ project }: Props) {
                         const connector = new ZeroWalletConnector({'{'} <br />
                         &emsp; chains: [chain.goerli], <br />
                         &emsp; options: zeroWalletConnectorOptions, <br />
-                        {'}'})
-
+                        {'}'}) */}
+                        <pre>
+                            {code}
+                        </pre>
                     </Text>
 
                     <br />
                     <br />
                     <Button variant="primary2">
-                        <Text variant={'heading3Bold'} color="inherit">
+                        <Text variant={'heading3Bold'} color="inherit" onClick={onCopy}>
                             Copy Code
                         </Text>
                     </Button>
