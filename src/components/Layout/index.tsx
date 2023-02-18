@@ -1,7 +1,7 @@
 import { getProjects } from '@/api'
 import useOwnerAndWebHookAttributes from '@/hooks/useOwnerAndWebHookAttributes'
 import { ProjectsContext } from '@/pages/_app'
-import { Flex, Spacer, Spinner } from '@chakra-ui/react'
+import { Flex, Spacer, Spinner, useColorMode } from '@chakra-ui/react'
 import { createContext, useCallback, useContext, useEffect } from 'react'
 import { useConnect, useSigner } from 'wagmi'
 import { ZeroWalletSigner } from 'zero-wallet-wagmi-connector'
@@ -22,6 +22,7 @@ export default function Layout({ children }: DashboardLayoutProps) {
     const ownerAndWebHookAttributes = useOwnerAndWebHookAttributes()
     const { data: signer } = useSigner<ZeroWalletSigner>()
     const { connect, connectors } = useConnect()
+    const { setColorMode } = useColorMode()
 
     useEffect(() => {
         const func = async () => {
@@ -54,6 +55,10 @@ export default function Layout({ children }: DashboardLayoutProps) {
     useEffect(() => {
         connect({ connector: connectors[0] })
     }, [connect, connectors])
+
+    useEffect(() => {
+        setColorMode('light')
+    }, [setColorMode])
 
     return (
         <Flex direction="column" minH="100vh">

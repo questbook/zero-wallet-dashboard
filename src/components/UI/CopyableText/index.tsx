@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react'
 import {
     Flex,
     FlexProps,
@@ -14,11 +13,7 @@ interface Props extends FlexProps {
 }
 
 function CopyableText({ label, placeholder, value, ...props }: Props) {
-    const { onCopy, setValue } = useClipboard('')
-
-    useEffect(() => {
-        setValue(value)
-    }, [setValue, value])
+    const { onCopy } = useClipboard(value)
 
     return (
         <Flex direction="column" {...props} gap={2}>

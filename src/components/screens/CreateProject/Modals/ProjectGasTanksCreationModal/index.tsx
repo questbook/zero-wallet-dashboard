@@ -33,7 +33,7 @@ export default function ProjectGasTanksCreationModal({ isOpen }: Props) {
                     textAlign={'center'}
                     mb={5}
                 >
-                    <Text variant="heading1Bold">Loading copy goes here</Text>
+                    <Text variant="heading1Bold">Setting up your gas tank</Text>
                 </ModalBody>
 
                 <ModalFooter

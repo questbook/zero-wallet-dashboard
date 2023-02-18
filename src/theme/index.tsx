@@ -8,6 +8,7 @@ import input from 'src/theme/components/input'
 import link from 'src/theme/components/link'
 import progress from 'src/theme/components/progress'
 import text from 'src/theme/components/text'
+import cards from './components/cards'
 
 const config: ThemeConfig = {
     initialColorMode: 'light',
@@ -44,6 +45,7 @@ const theme = extendTheme({
         },
     },
     components: {
+        ...cards,
         ...container,
         ...button,
         ...link,
