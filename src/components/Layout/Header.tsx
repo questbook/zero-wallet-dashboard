@@ -1,6 +1,17 @@
 import getAvatar from '@/utils/avatarUtils'
 import { formatAddress, formatAddressLong } from '@/utils/formattingUtils'
-import { useClipboard, Button, Flex, Image, Text, PopoverTrigger, PopoverArrow, PopoverBody, PopoverContent, Popover } from '@chakra-ui/react'
+import {
+    useClipboard,
+    Button,
+    Flex,
+    Image,
+    Text,
+    PopoverTrigger,
+    PopoverArrow,
+    PopoverBody,
+    PopoverContent,
+    Popover,
+} from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { useRef } from 'react'
 import { useAccount } from 'wagmi'
@@ -50,9 +61,10 @@ export default function Header() {
                 </a>
 
                 <Popover
-                    placement='bottom-end'
+                    placement="bottom-end"
                     isLazy
-                    initialFocusRef={popoverRef}>
+                    initialFocusRef={popoverRef}
+                >
                     <PopoverTrigger>
                         <Button gap={2} background="white">
                             <Image
@@ -62,46 +74,43 @@ export default function Header() {
                                 alt="avatar"
                             />
 
-                            {address ? formatAddress(address) : formatAddress(zeroAddress)}
+                            {address
+                                ? formatAddress(address)
+                                : formatAddress(zeroAddress)}
                         </Button>
                     </PopoverTrigger>
                     <PopoverContent>
                         <PopoverArrow />
                         <PopoverBody>
                             <Flex
-                                direction='column'
-                                align='stretch'
-                                bg='white'
+                                direction="column"
+                                align="stretch"
+                                bg="white"
                                 gap={3}
                             >
-                                <Text
-                                    variant={'Body1Bold'}
-                                    color='black.2'
-                                >
+                                <Text variant={'Body1Bold'} color="black.2">
                                     Your zero wallet
                                 </Text>
                                 <Text
-                                    variant='title1Regular'
+                                    variant="title1Regular"
                                     color={'black.2'}
-                                    mb='3'
+                                    mb="3"
                                 >
                                     {formatAddressLong(address || zeroAddress)}
                                 </Text>
 
                                 <Flex>
-                                    <Image
-                                        src='/assets/Keys.svg'
-                                        alt='key'
-                                    />
+                                    <Image src="/assets/Keys.svg" alt="key" />
                                     <Text
                                         ml={2}
-                                        _hover={{ textDecoration: 'underline', cursor: 'pointer' }}
-                                        onClick={
-                                            () => {
-                                                onCopy()
-                                            }
-                                        }
-                                        variant='title1Regular'
+                                        _hover={{
+                                            textDecoration: 'underline',
+                                            cursor: 'pointer',
+                                        }}
+                                        onClick={() => {
+                                            onCopy()
+                                        }}
+                                        variant="title1Regular"
                                         color={'black.2'}
                                     >
                                         Save wallet key

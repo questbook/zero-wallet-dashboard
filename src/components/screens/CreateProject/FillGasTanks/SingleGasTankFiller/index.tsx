@@ -7,7 +7,6 @@ import { Contract, providers, utils } from 'ethers'
 import { useState } from 'react'
 import { formatAddress } from '@/utils/formattingUtils'
 
-
 interface Props {
     gasTank: GasTankType
 }
@@ -36,8 +35,7 @@ export default function GasTankFiller({ gasTank }: Props) {
 
         try {
             await window.ethereum.request({ method: 'eth_requestAccounts' })
-        }
-        catch {
+        } catch {
             toast({
                 title: 'Error',
                 description: `Please connect to MetaMask`,
@@ -52,9 +50,8 @@ export default function GasTankFiller({ gasTank }: Props) {
             await window.ethereum.request({
                 method: 'wallet_switchEthereumChain',
                 params: [{ chainId: hexChainId }],
-            });
-        }
-        catch {
+            })
+        } catch {
             toast({
                 title: 'Error',
                 description: `Please switch the network to ${CHAIN_NAMES[chainId]}.`,
@@ -64,9 +61,12 @@ export default function GasTankFiller({ gasTank }: Props) {
             return
         }
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        const signer = (new providers.Web3Provider(window.ethereum, chainIdNumber)).getSigner()
+        const signer = new providers.Web3Provider(
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            window.ethereum,
+            chainIdNumber
+        ).getSigner()
         const contract = new Contract(contractAddress, abi, signer)
         const address = await signer.getAddress()
         const tx = await contract.depositFor(parseInt(gasTank.funding_key), {
@@ -93,7 +93,7 @@ export default function GasTankFiller({ gasTank }: Props) {
                 m="5"
                 ml="0"
             />
-            
+
             <Box m="5">
                 <Text variant="heading3Regular" color="black.1" mr="auto">
                     {formatAddress(contractAddress)}

@@ -1,8 +1,7 @@
-
 export default {
     Card: {
         baseStyle: {
-            backgroundColor: 'white'
+            backgroundColor: 'white',
         },
-    }
+    },
 }

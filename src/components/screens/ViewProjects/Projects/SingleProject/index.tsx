@@ -1,6 +1,15 @@
 import CopyableText from '@/components/UI/CopyableText'
 import { IProject } from '@/types'
-import { Card, Text, Flex, Button, Image, Box, Divider, useClipboard } from '@chakra-ui/react'
+import {
+    Card,
+    Text,
+    Flex,
+    Button,
+    Image,
+    Box,
+    Divider,
+    useClipboard,
+} from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { Fragment } from 'react'
 import SingleGasTankFiller from './SingleGasTankFiller'
@@ -9,9 +18,7 @@ interface Props {
     project: IProject
 }
 
-
 export default function SingleProject({ project }: Props) {
-
     const router = useRouter()
     const code = `\
 const zeroWalletConnectorOptions: 
@@ -32,7 +39,14 @@ const connector = new ZeroWalletConnector({
                     {project.name}
                 </Text>
 
-                <Button onClick={() => router.push(`/editProject/${project.project_id}`)} variant={'secondary2'} ml="auto" gap={2}>
+                <Button
+                    onClick={() =>
+                        router.push(`/editProject/${project.project_id}`)
+                    }
+                    variant={'secondary2'}
+                    ml="auto"
+                    gap={2}
+                >
                     <Image src="/assets/Edit.svg" alt="" />
                     <Text variant={'heading3Bold'}>Edit Dapp</Text>
                 </Button>
@@ -71,7 +85,13 @@ const connector = new ZeroWalletConnector({
                     // py='20'
                     color="white"
                 >
-                    <Text color={'inherit'} variant="code" wordBreak={'break-word'} overflow='auto' p='2'>
+                    <Text
+                        color={'inherit'}
+                        variant="code"
+                        wordBreak={'break-word'}
+                        overflow="auto"
+                        p="2"
+                    >
                         {/* const zeroWalletConnectorOptions: ZeroWalletConnectorOptions = {'{'} <br />
                         &emsp; zeroWalletProjectApiKey: {'<'}YourPrivateKey{'>'}
                         <br />
@@ -81,15 +101,17 @@ const connector = new ZeroWalletConnector({
                         &emsp; chains: [chain.goerli], <br />
                         &emsp; options: zeroWalletConnectorOptions, <br />
                         {'}'}) */}
-                        <pre>
-                            {code}
-                        </pre>
+                        <pre>{code}</pre>
                     </Text>
 
                     <br />
                     <br />
                     <Button variant="primary2">
-                        <Text variant={'heading3Bold'} color="inherit" onClick={onCopy}>
+                        <Text
+                            variant={'heading3Bold'}
+                            color="inherit"
+                            onClick={onCopy}
+                        >
                             Copy Code
                         </Text>
                     </Button>
