@@ -2,7 +2,7 @@ import TextField from '@/components/UI/TextField/TextField'
 import { CHAIN_ICONS, CHAIN_NAMES, SupportedChainIds } from '@/constants/chains'
 import { abi, ADDRESS_BY_CHAIN_ID } from '@/contracts/gasTank'
 import { GasTankType } from '@/types'
-import { Box, Button, Flex, Image, Text } from '@chakra-ui/react'
+import { Box, Button, Flex, Image, Text, useToast } from '@chakra-ui/react'
 import { Contract, providers, utils } from 'ethers'
 import { useState } from 'react'
 import { formatAddress } from '@/utils/formattingUtils'
@@ -14,6 +14,7 @@ interface Props {
 
 export default function GasTankFiller({ gasTank }: Props) {
     const [gasValue, setGasValue] = useState('0')
+    const toast = useToast()
 
     const chainId = gasTank.chain_id as unknown as SupportedChainIds
     const contractAddress = ADDRESS_BY_CHAIN_ID[chainId]
@@ -21,13 +22,51 @@ export default function GasTankFiller({ gasTank }: Props) {
     const handleFill = async () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        if (!window.ethereum) throw new Error("Couldn't connect to Metamask")
+        if (!window.ethereum) {
+            toast({
+                title: 'Error',
+                description: `Please install MetaMask`,
+                status: 'error',
+                isClosable: true,
+            })
+            return
+        }
+
+        // const provider = window.ethereum
+
+        try {
+            await window.ethereum.request({ method: 'eth_requestAccounts' })
+        }
+        catch {
+            toast({
+                title: 'Error',
+                description: `Please connect to MetaMask`,
+                status: 'error',
+                isClosable: true,
+            })
+            return
+        }
+        const chainIdNumber = parseInt(gasTank.chain_id)
+        const hexChainId = `0x${chainIdNumber.toString(16)}`
+        try {
+            await window.ethereum.request({
+                method: 'wallet_switchEthereumChain',
+                params: [{ chainId: hexChainId }],
+            });
+        }
+        catch {
+            toast({
+                title: 'Error',
+                description: `Please switch the network to ${CHAIN_NAMES[chainId]}.`,
+                status: 'error',
+                isClosable: true,
+            })
+            return
+        }
 
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        const provider = new providers.Web3Provider(window.ethereum)
-        await provider.send('eth_requestAccounts', [])
-        const signer = provider.getSigner()
+        const signer = (new providers.Web3Provider(window.ethereum, chainIdNumber)).getSigner()
         const contract = new Contract(contractAddress, abi, signer)
         const address = await signer.getAddress()
         const tx = await contract.depositFor(parseInt(gasTank.funding_key), {
