@@ -64,12 +64,9 @@ export async function createGasTanks(
         return acc
     }, {} as Record<SupportedChainIds, string[]>)
 
-    console.log(chainToContracts)
-
     // Create gas tanks
     const promises = Object.keys(chainToContracts).map((chainId) => {
         const chainIdFixed = chainId as unknown as SupportedChainIds
-        console.log(chainIdFixed)
         return createGasTank(
             ownerAndWebHookAttributes,
             projectId,
@@ -78,7 +75,6 @@ export async function createGasTanks(
         )
     })
     const gasTanks = await Promise.all(promises)
-    console.log(gasTanks)
     return gasTanks
 }
 

@@ -61,16 +61,15 @@ export default function GasTankFiller({ gasTank }: Props) {
             return
         }
 
-        let signer;
-        try{
+        let signer
+        try {
             signer = new providers.Web3Provider(
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 window.ethereum,
                 chainIdNumber
             ).getSigner()
-        }
-        catch{
+        } catch {
             toast({
                 title: 'Error',
                 description: `Metamask is not connected`,
@@ -82,13 +81,15 @@ export default function GasTankFiller({ gasTank }: Props) {
 
         try {
             const contract = new Contract(contractAddress, abi, signer)
-            const tx = await contract.depositFor(parseInt(gasTank.funding_key), {
-                value: utils.parseUnits(gasValue),
-                gasLimit: 91000
-            })
+            const tx = await contract.depositFor(
+                parseInt(gasTank.funding_key),
+                {
+                    value: utils.parseUnits(gasValue),
+                    gasLimit: 91000,
+                }
+            )
             await tx.wait(1)
-        }
-        catch {
+        } catch {
             toast({
                 title: 'Error',
                 description: `Transaction rejected`,

@@ -18,7 +18,7 @@ export default function CreateProjectDomainInput({
             {domains.length > 0 &&
                 domains.map((_: string, index: number) => {
                     return (
-                        <React.Fragment key={'domain-index'}>
+                        <React.Fragment key={`domain-${index}`}>
                             <DomainInput
                                 key={'domain-' + index}
                                 index={index}

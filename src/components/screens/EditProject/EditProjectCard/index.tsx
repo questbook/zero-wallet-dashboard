@@ -103,7 +103,7 @@ export default function EditProjectCard({
                 {domains.length > 0 &&
                     domains.map((_: string, index: number) => {
                         return (
-                            <Fragment key={'domain-index'}>
+                            <Fragment key={`domain-${index}`}>
                                 <DomainModifier
                                     key={'domain-' + index}
                                     index={index}

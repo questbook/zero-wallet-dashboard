@@ -54,8 +54,6 @@ export default function ContractModifier({
         ]
     }, [])
 
-    console.log(contractState)
-
     return (
         <Flex
             flexDirection={'row'}
