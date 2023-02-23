@@ -91,6 +91,7 @@ const connector = new ZeroWalletConnector({
                         wordBreak={'break-word'}
                         overflow="auto"
                         p="2"
+                        as='pre'
                     >
                         {/* const zeroWalletConnectorOptions: ZeroWalletConnectorOptions = {'{'} <br />
                         &emsp; zeroWalletProjectApiKey: {'<'}YourPrivateKey{'>'}
@@ -101,7 +102,7 @@ const connector = new ZeroWalletConnector({
                         &emsp; chains: [chain.goerli], <br />
                         &emsp; options: zeroWalletConnectorOptions, <br />
                         {'}'}) */}
-                        <pre>{code}</pre>
+                        {code}
                     </Text>
 
                     <br />
