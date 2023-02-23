@@ -72,24 +72,47 @@ export default function GasTankFiller({ gasTank }: Props) {
             return
         }
 
-        const signer = new providers.Web3Provider(
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            window.ethereum,
-            chainIdNumber
-        ).getSigner()
-        const contract = new Contract(contractAddress, abi, signer)
-        const address = await signer.getAddress()
-        const tx = await contract.depositFor(parseInt(gasTank.funding_key), {
-            from: address,
-            value: utils.parseUnits(gasValue),
-        })
-        const receipt = await tx.wait(1)
-        console.log('receipt', receipt)
+        let signer;
+        try{
+            signer = new providers.Web3Provider(
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                window.ethereum,
+                chainIdNumber
+            ).getSigner()
+        }
+        catch{
+            toast({
+                title: 'Error',
+                description: `Metamask is not connected`,
+                status: 'error',
+                isClosable: true,
+            })
+            return
+        }
+
+        try {
+            const contract = new Contract(contractAddress, abi, signer)
+            const tx = await contract.depositFor(parseInt(gasTank.funding_key), {
+                value: utils.parseUnits(gasValue),
+                gasLimit: 91000
+            })
+            await tx.wait(1)
+        }
+        catch {
+            toast({
+                title: 'Error',
+                description: `Transaction rejected`,
+                status: 'error',
+                isClosable: true,
+            })
+            return
+        }
     }
 
     return (
         <Fragment>
+
             <Flex
                 direction={{ base: 'column', lg: 'row' }}
                 // alignItems={{ base: 'flex-start', lg: 'center' }}
