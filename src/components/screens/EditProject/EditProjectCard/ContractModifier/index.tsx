@@ -4,7 +4,7 @@ import { Flex, IconButton, Text, Image } from '@chakra-ui/react'
 import { useEffect, useMemo, useState } from 'react'
 import { ethers } from 'ethers'
 import { CHAIN_ICONS, CHAIN_NAMES, SupportedChainIds } from '@/constants/chains'
-import Dropdown from '@/components/UI/Dropdown.tsx'
+import Dropdown from '@/components/UI/Dropdown'
 
 interface Props {
     index: number
