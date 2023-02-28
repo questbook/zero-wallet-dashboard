@@ -2,7 +2,7 @@ import TextField from '@/components/UI/TextField/TextField'
 import { CHAIN_ICONS, CHAIN_NAMES, SupportedChainIds } from '@/constants/chains'
 import { abi, ADDRESS_BY_CHAIN_ID } from '@/contracts/gasTank'
 import { GasTankType } from '@/types'
-import { formatAddress } from '@/utils/formattingUtils'
+import { formatAddress, formatGasPrice } from '@/utils/formattingUtils'
 import {
     Box,
     Button,
@@ -158,7 +158,9 @@ export default function GasTankFiller({ gasTank }: Props) {
                     textAlign={'center'}
                 >
                     <Text variant={'Body1Bold'}>AVAILABLE GAS</Text>
-                    <Text variant={'heading3Regular'}>{gasTank.balance}</Text>
+                    <Text variant={'heading3Regular'}>
+                        {formatGasPrice(parseFloat(gasTank.balance))}
+                    </Text>
                 </Box>
 
                 {!isOpen && (

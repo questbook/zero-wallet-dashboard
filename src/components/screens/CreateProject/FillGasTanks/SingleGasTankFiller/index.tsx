@@ -5,7 +5,7 @@ import { GasTankType } from '@/types'
 import { Box, Button, Flex, Image, Text, useToast } from '@chakra-ui/react'
 import { Contract, providers, utils } from 'ethers'
 import { useState } from 'react'
-import { formatAddress } from '@/utils/formattingUtils'
+import { formatAddress, formatGasPrice } from '@/utils/formattingUtils'
 
 interface Props {
     gasTank: GasTankType
@@ -163,7 +163,9 @@ export default function GasTankFiller({ gasTank }: Props) {
                 textAlign={'center'}
             >
                 <Text variant={'Body1Bold'}>AVAILABLE GAS</Text>
-                <Text variant={'heading3Regular'}>{gasTank.balance}</Text>
+                <Text variant={'heading3Regular'}>
+                    {formatGasPrice(parseFloat(gasTank.balance))}
+                </Text>
             </Box>
         </Flex>
     )

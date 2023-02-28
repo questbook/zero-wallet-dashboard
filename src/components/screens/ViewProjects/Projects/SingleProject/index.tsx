@@ -53,7 +53,7 @@ const connector = new ZeroWalletConnector({
             </Flex>
 
             <Flex>
-                <Box w="55%">
+                <Box w="55%" overflow="hidden">
                     <CopyableText
                         value={project.project_api_key}
                         label="API KEY"
@@ -84,6 +84,7 @@ const connector = new ZeroWalletConnector({
                     p="10"
                     // py='20'
                     color="white"
+                    h="fit-content"
                 >
                     <Text
                         color={'inherit'}
