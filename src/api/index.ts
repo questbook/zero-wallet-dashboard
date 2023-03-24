@@ -66,7 +66,7 @@ export async function createGasTanks(
 
     // Create gas tanks
     const promises = Object.keys(chainToContracts).map((chainId) => {
-        const chainIdFixed = chainId as unknown as SupportedChainIds
+        const chainIdFixed = parseInt(chainId) as unknown as SupportedChainIds
         return createGasTank(
             ownerAndWebHookAttributes,
             projectId,
