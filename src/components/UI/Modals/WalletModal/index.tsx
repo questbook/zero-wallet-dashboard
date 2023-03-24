@@ -18,7 +18,7 @@ interface Props {
 }
 
 export default function WalletModal({ isOpen, setIsOpen }: Props) {
-    const privateKey = localStorage.getItem('zeroWalletPrivateKey')
+    const privateKey = typeof window !== 'undefined' ? localStorage.getItem('zeroWalletPrivateKey'): ''
     const { onCopy } = useClipboard(privateKey || '')
 
     return (
