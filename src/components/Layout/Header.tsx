@@ -1,7 +1,6 @@
 import getAvatar from '@/utils/avatarUtils'
 import { formatAddress, formatAddressLong } from '@/utils/formattingUtils'
 import {
-    useClipboard,
     Button,
     Flex,
     Image,
@@ -13,19 +12,21 @@ import {
     Popover,
 } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { useAccount } from 'wagmi'
+import WalletModal from '../UI/Modals/WalletModal'
 
 // header component with wagmi connect button
 export default function Header() {
-    const { address } = useAccount()
     const zeroAddress = '0x000000000000000'
+    const { address } = useAccount()
     const router = useRouter()
     const popoverRef = useRef<HTMLButtonElement>(null)
-    const { onCopy } = useClipboard(address || '')
+    const [isModalOpen, setIsModalOpen] = useState(true)
 
     return (
         <Flex as="header" p={4}>
+            <WalletModal isOpen={isModalOpen} setIsOpen={(newVal) => setIsModalOpen(newVal)} />
             <Image
                 onClick={() => {
                     router.push({
@@ -108,7 +109,7 @@ export default function Header() {
                                             cursor: 'pointer',
                                         }}
                                         onClick={() => {
-                                            onCopy()
+                                            setIsModalOpen(true)
                                         }}
                                         variant="title1Regular"
                                         color={'black.2'}

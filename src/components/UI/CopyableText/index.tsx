@@ -46,6 +46,7 @@ function CopyableText({ label, placeholder, value, ...props }: Props) {
                     color="black.1"
                     h="100%"
                     lineHeight={'100%!'}
+                    overflow='hidden'
                 >
                     {value}
                 </Text>
