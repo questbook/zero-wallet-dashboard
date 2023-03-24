@@ -13,7 +13,7 @@ type DashboardLayoutProps = {
 }
 
 export const ProjectUpdater = createContext<{
-    updateProjects: () => void
+    updateProjects: () => Promise<void>
 } | null>(null)
 
 export default function Layout({ children }: DashboardLayoutProps) {

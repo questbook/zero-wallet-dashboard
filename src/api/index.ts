@@ -124,7 +124,7 @@ function reduceContractsAndNetworksLists(
 
 function reduceContractsAndNetworksProject(project: IProject) {
     const chainToContracts = project.gasTanks.reduce((acc, gasTank) => {
-        const chainId = gasTank.chain_id as unknown as SupportedChainIds
+        const chainId = parseInt(gasTank.chain_id) as unknown as SupportedChainIds
         acc[chainId] = gasTank.whitelist
         return acc
     }, {} as Record<SupportedChainIds, string[]>)

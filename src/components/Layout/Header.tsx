@@ -22,7 +22,7 @@ export default function Header() {
     const { address } = useAccount()
     const router = useRouter()
     const popoverRef = useRef<HTMLButtonElement>(null)
-    const [isModalOpen, setIsModalOpen] = useState(true)
+    const [isModalOpen, setIsModalOpen] = useState(false)
 
     return (
         <Flex as="header" p={4}>

@@ -1,4 +1,5 @@
 import { updateProject } from '@/api'
+import { ProjectUpdater } from '@/components/Layout'
 import EditProjectCard from '@/components/screens/EditProject/EditProjectCard'
 import { SupportedChainIds } from '@/constants/chains'
 import useOwnerAndWebHookAttributes from '@/hooks/useOwnerAndWebHookAttributes'
@@ -10,6 +11,7 @@ import { useContext, useState } from 'react'
 import { ProjectsContext } from '../_app'
 
 export default function EditProject() {
+    const { updateProjects } = useContext(ProjectUpdater)!
     const { projects } = useContext(ProjectsContext)!
     const router = useRouter()
     const { id: projectId } = router.query
@@ -46,6 +48,8 @@ export default function EditProject() {
         ...(project?.allowed_origins || []),
     ])
     const [domainsError, setDomainsError] = useState<string>('')
+
+    const [isSaving, setIsSaving] = useState(false)
 
     const toast = useToast()
 
@@ -102,12 +106,14 @@ export default function EditProject() {
         if (!ownerAndWebHookAttributes) {
             toast({
                 title: 'Error',
-                description: 'Please connect your wallet.',
+                description: 'Wallet not connected.',
                 status: 'error',
                 isClosable: true,
             })
             return
         }
+
+        setIsSaving(true)
 
         updateProject(
             ownerAndWebHookAttributes,
@@ -117,11 +123,14 @@ export default function EditProject() {
             contractsNetworks,
             domains
         ).then(() => {
-            toast({
-                title: 'Success',
-                description: 'Your changes are saved now.',
-                status: 'success',
-                isClosable: true,
+            updateProjects().then(() => {
+                toast({
+                    title: 'Success',
+                    description: 'Your changes are saved now.',
+                    status: 'success',
+                    isClosable: true,
+                })
+                setIsSaving(false)
             })
         })
     }
@@ -136,7 +145,7 @@ export default function EditProject() {
                 <Text variant="heading1Bold" lineHeight="100%">
                     Edit Dapp
                 </Text>
-                <Button variant="primary2" ml="auto" onClick={handleSave}>
+                <Button isLoading={isSaving} variant="primary2" ml="auto" onClick={handleSave}>
                     <Text variant={'heading3Bold'} color={'inherit'}>
                         Save
                     </Text>
